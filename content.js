@@ -32,14 +32,14 @@ function initScrollButtons() {
   // Create scroll to top button
   scrollTopBtn = document.createElement("div");
   scrollTopBtn.className = "scrollToExt-button scrollToExt-top";
-  scrollTopBtn.innerHTML = "↑";
+  scrollTopBtn.innerHTML = "&#8593;"; // Up arrow HTML entity
   scrollTopBtn.title = "Scroll to top";
   scrollTopBtn.addEventListener("click", scrollToTop);
 
   // Create scroll to bottom button
   scrollBottomBtn = document.createElement("div");
   scrollBottomBtn.className = "scrollToExt-button scrollToExt-bottom";
-  scrollBottomBtn.innerHTML = "↓";
+  scrollBottomBtn.innerHTML = "&#8595;"; // Down arrow HTML entity
   scrollBottomBtn.title = "Scroll to bottom";
   scrollBottomBtn.addEventListener("click", scrollToBottom);
 
