@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Chrome extension that adds scroll to top/bottom buttons",
   "main": "dist/content.js",
+  "type": "module",
   "scripts": {
     "build": "tsc && node build.js",
     "watch": "tsc --watch",
@@ -17,6 +18,5 @@
     "@biomejs/biome": "^1.5.3",
     "@types/chrome": "^0.0.260",
     "typescript": "^5.3.3"
-  },
-  "type": "commonjs"
+  }
 }

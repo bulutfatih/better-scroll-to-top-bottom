@@ -22,7 +22,8 @@ This extension is built with TypeScript and uses Biome.js for code formatting an
 
 1. Clone the repository
 2. Install dependencies:
-   ```
+
+   ```bash
    npm install
    ```
 
@@ -30,11 +31,12 @@ This extension is built with TypeScript and uses Biome.js for code formatting an
 
 To build the extension:
 
-```
+```bash
 npm run build
 ```
 
 This will:
+
 1. Compile TypeScript files
 2. Copy static assets to the `dist` directory
 
@@ -68,4 +70,4 @@ The extension provides several customization options:
 
 ## License
 
-MIT 
+MIT
