@@ -1,4 +1,4 @@
-.scroll-to-extension-container {
+.scrollToExt-container {
   position: fixed;
   z-index: 9999;
   display: flex;
@@ -7,7 +7,7 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.scroll-to-extension-button {
+.scrollToExt-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,19 +19,19 @@
   transition: all 0.3s ease;
 }
 
-.scroll-to-extension-button:hover {
+.scrollToExt-button:hover {
   background-color: #555;
   transform: scale(1.1);
 }
 
-.scroll-to-extension-button.hidden {
+.scrollToExt-button.scrollToExt-hidden {
   opacity: 0;
   pointer-events: none;
   transform: scale(0.8);
 }
 
 /* Ensure the buttons don't interfere with page content */
-.scroll-to-extension-container * {
+.scrollToExt-container * {
   box-sizing: border-box;
   font-family: Arial, sans-serif;
   user-select: none;

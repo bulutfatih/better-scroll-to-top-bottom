@@ -29,18 +29,18 @@ chrome.storage.sync.get("scrollToSettings", (data) => {
 function initScrollButtons() {
   // Create container for buttons
   container = document.createElement("div");
-  container.className = "scroll-to-extension-container";
+  container.className = "scrollToExt-container";
 
   // Create scroll to top button
   scrollTopBtn = document.createElement("div");
-  scrollTopBtn.className = "scroll-to-extension-button scroll-to-top";
+  scrollTopBtn.className = "scrollToExt-button scrollToExt-top";
   scrollTopBtn.innerHTML = "↑";
   scrollTopBtn.title = "Scroll to top";
   scrollTopBtn.addEventListener("click", scrollToTop);
 
   // Create scroll to bottom button
   scrollBottomBtn = document.createElement("div");
-  scrollBottomBtn.className = "scroll-to-extension-button scroll-to-bottom";
+  scrollBottomBtn.className = "scrollToExt-button scrollToExt-bottom";
   scrollBottomBtn.innerHTML = "↓";
   scrollBottomBtn.title = "Scroll to bottom";
   scrollBottomBtn.addEventListener("click", scrollToBottom);
@@ -109,7 +109,7 @@ function applySettings() {
   container.style.opacity = settings.opacity;
 
   // Button size
-  const buttons = document.querySelectorAll(".scroll-to-extension-button");
+  const buttons = document.querySelectorAll(".scrollToExt-button");
   buttons.forEach((btn) => {
     btn.style.width = `${settings.buttonSize}px`;
     btn.style.height = `${settings.buttonSize}px`;
@@ -157,16 +157,16 @@ function updateButtonVisibility() {
 
   // Hide top button when at the top
   if (scrollTop <= 10) {
-    scrollTopBtn.classList.add("hidden");
+    scrollTopBtn.classList.add("scrollToExt-hidden");
   } else {
-    scrollTopBtn.classList.remove("hidden");
+    scrollTopBtn.classList.remove("scrollToExt-hidden");
   }
 
   // Hide bottom button when at the bottom
   if (scrollTop + clientHeight >= scrollHeight - 10) {
-    scrollBottomBtn.classList.add("hidden");
+    scrollBottomBtn.classList.add("scrollToExt-hidden");
   } else {
-    scrollBottomBtn.classList.remove("hidden");
+    scrollBottomBtn.classList.remove("scrollToExt-hidden");
   }
 }
 
