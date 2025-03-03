@@ -1,30 +1,54 @@
-// Default settings
-let settings = {
-  position: "middle-right", // 'top-left', 'top-right', 'middle-left', etc.
-  offset: 20, // distance from the edge in pixels
-  verticalSpacing: 10, // spacing between buttons in pixels
-  opacity: 0.5, // opacity when not hovering
-  hoverOpacity: 1, // opacity when hovering
-  scrollBehavior: "smooth", // 'smooth' or 'instant'
-  buttonSize: 40, // size in pixels
-  hideDelay: 500, // time in ms before hiding buttons after scroll stops
-};
+// Define types
+type Position =
+  | "top-left"
+  | "top-right"
+  | "middle-left"
+  | "middle-right"
+  | "bottom-left"
+  | "bottom-right";
+
+type ContentScrollBehavior = "smooth" | "auto";
+
+interface ScrollToSettings {
+  position: Position;
+  offset: number;
+  verticalSpacing: number;
+  opacity: number;
+  hoverOpacity: number;
+  scrollBehavior: ContentScrollBehavior;
+  buttonSize: number;
+  hideDelay: number;
+}
 
 // Elements
-let scrollTopBtn;
-let scrollBottomBtn;
-let container;
-let hideTimeout;
+let scrollTopBtn: HTMLDivElement;
+let scrollBottomBtn: HTMLDivElement;
+let container: HTMLDivElement;
+let hideTimeout: number | undefined;
+
+// Default settings
+const defaultSettings: ScrollToSettings = {
+  position: "middle-right",
+  offset: 20,
+  verticalSpacing: 10,
+  opacity: 0.5,
+  hoverOpacity: 1,
+  scrollBehavior: "smooth",
+  buttonSize: 40,
+  hideDelay: 1500,
+};
 
 // Load settings from storage
 chrome.storage.sync.get("scrollToSettings", (data) => {
-  if (data.scrollToSettings) {
-    settings = { ...settings, ...data.scrollToSettings };
-  }
-  initScrollButtons();
+  const storedSettings = data.scrollToSettings as ScrollToSettings | undefined;
+  const settings: ScrollToSettings = storedSettings
+    ? { ...defaultSettings, ...storedSettings }
+    : defaultSettings;
+
+  initScrollButtons(settings);
 });
 
-function initScrollButtons() {
+function initScrollButtons(settings: ScrollToSettings): void {
   // Create container for buttons
   container = document.createElement("div");
   container.className = "scrollToExt-container";
@@ -34,14 +58,14 @@ function initScrollButtons() {
   scrollTopBtn.className = "scrollToExt-button scrollToExt-top";
   scrollTopBtn.innerHTML = "&#8593;"; // Up arrow HTML entity
   scrollTopBtn.title = "Scroll to top";
-  scrollTopBtn.addEventListener("click", scrollToTop);
+  scrollTopBtn.addEventListener("click", () => scrollToTop(settings));
 
   // Create scroll to bottom button
   scrollBottomBtn = document.createElement("div");
   scrollBottomBtn.className = "scrollToExt-button scrollToExt-bottom";
   scrollBottomBtn.innerHTML = "&#8595;"; // Down arrow HTML entity
   scrollBottomBtn.title = "Scroll to bottom";
-  scrollBottomBtn.addEventListener("click", scrollToBottom);
+  scrollBottomBtn.addEventListener("click", () => scrollToBottom(settings));
 
   // Add buttons to container
   container.appendChild(scrollTopBtn);
@@ -51,23 +75,23 @@ function initScrollButtons() {
   document.body.appendChild(container);
 
   // Apply settings
-  applySettings();
+  applySettings(settings);
 
   // Add event listeners
-  window.addEventListener("scroll", handleScroll);
-  window.addEventListener("resize", applySettings);
+  window.addEventListener("scroll", () => handleScroll(settings));
+  window.addEventListener("resize", () => applySettings(settings));
   container.addEventListener("mouseenter", () => {
-    container.style.opacity = settings.hoverOpacity;
+    container.style.opacity = settings.hoverOpacity.toString();
   });
   container.addEventListener("mouseleave", () => {
-    container.style.opacity = settings.opacity;
+    container.style.opacity = settings.opacity.toString();
   });
 
   // Initial button visibility
   updateButtonVisibility();
 }
 
-function applySettings() {
+function applySettings(settings: ScrollToSettings): void {
   // Parse position
   const [vertical, horizontal] = settings.position.split("-");
 
@@ -101,51 +125,51 @@ function applySettings() {
   container.style.gap = `${settings.verticalSpacing}px`;
 
   // Opacity
-  container.style.opacity = settings.opacity;
+  container.style.opacity = settings.opacity.toString();
 
   // Button size
-  const buttons = document.querySelectorAll(".scrollToExt-button");
-  buttons.forEach((btn) => {
+  const buttons = document.querySelectorAll<HTMLElement>(".scrollToExt-button");
+  for (const btn of Array.from(buttons)) {
     btn.style.width = `${settings.buttonSize}px`;
     btn.style.height = `${settings.buttonSize}px`;
     btn.style.fontSize = `${settings.buttonSize / 2}px`;
-  });
+  }
 }
 
-function scrollToTop() {
+function scrollToTop(settings: ScrollToSettings): void {
   window.scrollTo({
     top: 0,
     behavior: settings.scrollBehavior,
   });
 }
 
-function scrollToBottom() {
+function scrollToBottom(settings: ScrollToSettings): void {
   window.scrollTo({
     top: document.documentElement.scrollHeight,
     behavior: settings.scrollBehavior,
   });
 }
 
-function handleScroll() {
+function handleScroll(settings: ScrollToSettings): void {
   updateButtonVisibility();
 
   // Show buttons when scrolling
-  container.style.opacity = settings.hoverOpacity;
+  container.style.opacity = settings.hoverOpacity.toString();
 
   // Clear previous timeout
-  if (hideTimeout) {
+  if (hideTimeout !== undefined) {
     clearTimeout(hideTimeout);
   }
 
   // Set timeout to reduce opacity after scrolling stops
-  hideTimeout = setTimeout(() => {
+  hideTimeout = window.setTimeout(() => {
     if (!container.matches(":hover")) {
-      container.style.opacity = settings.opacity;
+      container.style.opacity = settings.opacity.toString();
     }
   }, settings.hideDelay);
 }
 
-function updateButtonVisibility() {
+function updateButtonVisibility(): void {
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   const scrollHeight = document.documentElement.scrollHeight;
   const clientHeight = document.documentElement.clientHeight;
@@ -168,8 +192,8 @@ function updateButtonVisibility() {
 // Listen for settings changes
 chrome.storage.onChanged.addListener((changes) => {
   if (changes.scrollToSettings) {
-    settings = { ...settings, ...changes.scrollToSettings.newValue };
-    applySettings();
+    const newSettings = changes.scrollToSettings.newValue as ScrollToSettings;
+    applySettings(newSettings);
     updateButtonVisibility();
   }
 });

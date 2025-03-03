@@ -1,0 +1,22 @@
+{
+  "name": "scroll-to-extension",
+  "version": "1.0.0",
+  "description": "Chrome extension that adds scroll to top/bottom buttons",
+  "main": "dist/content.js",
+  "scripts": {
+    "build": "tsc && node build.js",
+    "watch": "tsc --watch",
+    "format": "biome format --write ./src",
+    "lint": "biome lint ./src",
+    "check": "biome check ./src"
+  },
+  "keywords": ["chrome-extension", "scroll", "typescript"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@biomejs/biome": "^1.5.3",
+    "@types/chrome": "^0.0.260",
+    "typescript": "^5.3.3"
+  },
+  "type": "commonjs"
+}
