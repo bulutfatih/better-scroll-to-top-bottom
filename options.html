@@ -158,6 +158,30 @@
       font-size: 24px;
       margin-bottom: 5px;
     }
+    
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .radio-option {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .radio-option input[type="radio"] {
+      width: auto;
+      margin-right: 8px;
+      cursor: pointer;
+    }
+    
+    .radio-option label {
+      font-weight: normal;
+      margin-bottom: 0;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -226,11 +250,17 @@
     </div>
     
     <div class="option-group">
-      <label for="scrollBehavior">Scroll Behavior:</label>
-      <select id="scrollBehavior">
-        <option value="smooth">Smooth</option>
-        <option value="instant">Instant</option>
-      </select>
+      <label>Scroll Behavior:</label>
+      <div class="radio-group">
+        <div class="radio-option">
+          <input type="radio" id="scrollBehaviorSmooth" name="scrollBehavior" value="smooth" checked>
+          <label for="scrollBehaviorSmooth">Smooth</label>
+        </div>
+        <div class="radio-option">
+          <input type="radio" id="scrollBehaviorInstant" name="scrollBehavior" value="instant">
+          <label for="scrollBehaviorInstant">Instant</label>
+        </div>
+      </div>
       
       <label for="buttonSize">
         Button Size: <span id="buttonSizeValue" class="range-value">40</span>px

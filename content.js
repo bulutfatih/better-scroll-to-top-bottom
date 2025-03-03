@@ -5,7 +5,7 @@ let settings = {
   verticalSpacing: 10, // spacing between buttons in pixels
   opacity: 0.5, // opacity when not hovering
   hoverOpacity: 1, // opacity when hovering
-  scrollBehavior: "smooth", // 'smooth' or 'auto'
+  scrollBehavior: "smooth", // 'smooth' or 'instant'
   buttonSize: 40, // size in pixels
   hideDelay: 1500, // time in ms before hiding buttons after scroll stops
 };

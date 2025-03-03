@@ -21,7 +21,9 @@ const opacityInput = document.getElementById("opacity");
 const opacityValue = document.getElementById("opacityValue");
 const hoverOpacityInput = document.getElementById("hoverOpacity");
 const hoverOpacityValue = document.getElementById("hoverOpacityValue");
-const scrollBehaviorSelect = document.getElementById("scrollBehavior");
+const scrollBehaviorRadios = document.querySelectorAll(
+  'input[name="scrollBehavior"]'
+);
 const buttonSizeInput = document.getElementById("buttonSize");
 const buttonSizeValue = document.getElementById("buttonSizeValue");
 const hideDelayInput = document.getElementById("hideDelay");
@@ -54,7 +56,14 @@ function loadSettings() {
     opacityValue.textContent = settings.opacity;
     hoverOpacityInput.value = settings.hoverOpacity;
     hoverOpacityValue.textContent = settings.hoverOpacity;
-    scrollBehaviorSelect.value = settings.scrollBehavior;
+
+    // Set scroll behavior radio
+    const scrollBehaviorValue =
+      settings.scrollBehavior || defaultSettings.scrollBehavior;
+    document.getElementById(
+      `scrollBehavior${capitalizeFirstLetter(scrollBehaviorValue)}`
+    ).checked = true;
+
     buttonSizeInput.value = settings.buttonSize;
     buttonSizeValue.textContent = settings.buttonSize;
     hideDelayInput.value = settings.hideDelay;
@@ -63,6 +72,11 @@ function loadSettings() {
     // Update preview
     updatePreview();
   });
+}
+
+// Helper function to capitalize first letter
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 // Update selected position option
@@ -81,6 +95,16 @@ function updateSelectedPositionOption(position) {
   }
 }
 
+// Get selected scroll behavior
+function getSelectedScrollBehavior() {
+  for (const radio of scrollBehaviorRadios) {
+    if (radio.checked) {
+      return radio.value;
+    }
+  }
+  return defaultSettings.scrollBehavior;
+}
+
 // Save settings
 function saveSettings() {
   const settings = {
@@ -89,7 +113,7 @@ function saveSettings() {
     verticalSpacing: parseInt(verticalSpacingInput.value),
     opacity: parseFloat(opacityInput.value),
     hoverOpacity: parseFloat(hoverOpacityInput.value),
-    scrollBehavior: scrollBehaviorSelect.value,
+    scrollBehavior: getSelectedScrollBehavior(),
     buttonSize: parseInt(buttonSizeInput.value),
     hideDelay: parseInt(hideDelayInput.value),
   };
@@ -117,7 +141,12 @@ function resetSettings() {
   opacityValue.textContent = defaultSettings.opacity;
   hoverOpacityInput.value = defaultSettings.hoverOpacity;
   hoverOpacityValue.textContent = defaultSettings.hoverOpacity;
-  scrollBehaviorSelect.value = defaultSettings.scrollBehavior;
+
+  // Reset scroll behavior radio
+  document.getElementById(
+    `scrollBehavior${capitalizeFirstLetter(defaultSettings.scrollBehavior)}`
+  ).checked = true;
+
   buttonSizeInput.value = defaultSettings.buttonSize;
   buttonSizeValue.textContent = defaultSettings.buttonSize;
   hideDelayInput.value = defaultSettings.hideDelay;
@@ -231,6 +260,11 @@ positionOptions.forEach((option) => {
     updateSelectedPositionOption(position);
     updatePreview();
   });
+});
+
+// Scroll behavior radio change handler
+scrollBehaviorRadios.forEach((radio) => {
+  radio.addEventListener("change", updatePreview);
 });
 
 saveButton.addEventListener("click", saveSettings);
