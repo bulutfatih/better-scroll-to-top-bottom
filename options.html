@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Scroll To Extension Options</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      color: #4285f4;
+      margin-top: 0;
+    }
+    
+    .option-group {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .option-group:last-child {
+      border-bottom: none;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    
+    select, input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    
+    input[type="range"] {
+      width: 100%;
+    }
+    
+    .range-value {
+      display: inline-block;
+      width: 40px;
+      text-align: right;
+    }
+    
+    .buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    
+    button {
+      padding: 8px 16px;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #3367d6;
+    }
+    
+    button#reset {
+      background-color: #f44336;
+    }
+    
+    button#reset:hover {
+      background-color: #d32f2f;
+    }
+    
+    .preview {
+      position: relative;
+      height: 200px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      background-color: #f9f9f9;
+    }
+    
+    .preview-scrollbar {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 16px;
+      height: 100%;
+      background-color: #eee;
+    }
+    
+    .preview-button {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #333;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    
+    .saved-message {
+      display: none;
+      background-color: #4caf50;
+      color: white;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Scroll To Extension Options</h1>
+    
+    <div id="savedMessage" class="saved-message">Settings saved successfully!</div>
+    
+    <div class="preview" id="preview">
+      <div class="preview-scrollbar"></div>
+      <div class="preview-button" id="previewTopBtn">↑</div>
+      <div class="preview-button" id="previewBottomBtn">↓</div>
+    </div>
+    
+    <div class="option-group">
+      <label for="horizontalPosition">Horizontal Position:</label>
+      <select id="horizontalPosition">
+        <option value="right">Right Side</option>
+        <option value="left">Left Side</option>
+      </select>
+      
+      <label for="verticalPosition">Vertical Position:</label>
+      <select id="verticalPosition">
+        <option value="bottom">Bottom</option>
+        <option value="middle">Middle</option>
+        <option value="top">Top</option>
+        <option value="custom">Custom</option>
+      </select>
+      
+      <div id="customVerticalPositionContainer" style="display: none;">
+        <label for="customVerticalPosition">
+          Custom Vertical Position: <span id="customVerticalPositionValue" class="range-value">50</span>%
+        </label>
+        <input type="range" id="customVerticalPosition" min="0" max="100" value="50">
+      </div>
+      
+      <label for="horizontalOffset">
+        Distance from Edge: <span id="horizontalOffsetValue" class="range-value">20</span>px
+      </label>
+      <input type="range" id="horizontalOffset" min="0" max="100" value="20">
+      
+      <label for="verticalSpacing">
+        Spacing Between Buttons: <span id="verticalSpacingValue" class="range-value">10</span>px
+      </label>
+      <input type="range" id="verticalSpacing" min="0" max="50" value="10">
+    </div>
+    
+    <div class="option-group">
+      <label for="opacity">
+        Normal Opacity: <span id="opacityValue" class="range-value">0.5</span>
+      </label>
+      <input type="range" id="opacity" min="0" max="1" step="0.1" value="0.5">
+      
+      <label for="hoverOpacity">
+        Hover Opacity: <span id="hoverOpacityValue" class="range-value">1.0</span>
+      </label>
+      <input type="range" id="hoverOpacity" min="0" max="1" step="0.1" value="1">
+    </div>
+    
+    <div class="option-group">
+      <label for="scrollBehavior">Scroll Behavior:</label>
+      <select id="scrollBehavior">
+        <option value="smooth">Smooth</option>
+        <option value="auto">Instant</option>
+      </select>
+      
+      <label for="buttonSize">
+        Button Size: <span id="buttonSizeValue" class="range-value">40</span>px
+      </label>
+      <input type="range" id="buttonSize" min="20" max="60" value="40">
+      
+      <label for="hideDelay">
+        Hide Delay: <span id="hideDelayValue" class="range-value">1500</span>ms
+      </label>
+      <input type="range" id="hideDelay" min="500" max="5000" step="100" value="1500">
+    </div>
+    
+    <div class="buttons">
+      <button id="reset">Reset to Defaults</button>
+      <button id="save">Save Settings</button>
+    </div>
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html> 

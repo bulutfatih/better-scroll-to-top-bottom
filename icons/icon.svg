@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="20" fill="#4285f4"/>
+  <g fill="white">
+    <!-- Up arrow -->
+    <path d="M64,30 L40,54 L52,54 L52,70 L76,70 L76,54 L88,54 Z"/>
+    <!-- Down arrow -->
+    <path d="M64,98 L88,74 L76,74 L76,58 L52,58 L52,74 L40,74 Z"/>
+  </g>
+</svg> 

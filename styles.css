@@ -1,0 +1,38 @@
+.scroll-to-extension-container {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-to-extension-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.scroll-to-extension-button:hover {
+  background-color: #555;
+  transform: scale(1.1);
+}
+
+.scroll-to-extension-button.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+}
+
+/* Ensure the buttons don't interfere with page content */
+.scroll-to-extension-container * {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  user-select: none;
+} 
