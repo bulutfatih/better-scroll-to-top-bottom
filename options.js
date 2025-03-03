@@ -7,7 +7,7 @@ const defaultSettings = {
   hoverOpacity: 1,
   scrollBehavior: "smooth",
   buttonSize: 40,
-  hideDelay: 1500,
+  hideDelay: 500,
 };
 
 // DOM elements

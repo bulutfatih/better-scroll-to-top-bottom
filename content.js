@@ -7,7 +7,7 @@ let settings = {
   hoverOpacity: 1, // opacity when hovering
   scrollBehavior: "smooth", // 'smooth' or 'instant'
   buttonSize: 40, // size in pixels
-  hideDelay: 1500, // time in ms before hiding buttons after scroll stops
+  hideDelay: 500, // time in ms before hiding buttons after scroll stops
 };
 
 // Elements
