@@ -128,6 +128,36 @@
       margin-bottom: 20px;
       text-align: center;
     }
+    
+    .position-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .position-option {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .position-option:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .position-option.selected {
+      background-color: #e3f2fd;
+      border-color: #4285f4;
+    }
+    
+    .position-option-icon {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
   </style>
 </head>
 <body>
@@ -143,31 +173,39 @@
     </div>
     
     <div class="option-group">
-      <label for="horizontalPosition">Horizontal Position:</label>
-      <select id="horizontalPosition">
-        <option value="right">Right Side</option>
-        <option value="left">Left Side</option>
-      </select>
-      
-      <label for="verticalPosition">Vertical Position:</label>
-      <select id="verticalPosition">
-        <option value="bottom">Bottom</option>
-        <option value="middle">Middle</option>
-        <option value="top">Top</option>
-        <option value="custom">Custom</option>
-      </select>
-      
-      <div id="customVerticalPositionContainer" style="display: none;">
-        <label for="customVerticalPosition">
-          Custom Vertical Position: <span id="customVerticalPositionValue" class="range-value">50</span>%
-        </label>
-        <input type="range" id="customVerticalPosition" min="0" max="100" value="50">
+      <label>Button Position:</label>
+      <div class="position-grid">
+        <div class="position-option" data-position="top-left">
+          <div class="position-option-icon">↖</div>
+          <div>Top Left</div>
+        </div>
+        <div class="position-option" data-position="top-right">
+          <div class="position-option-icon">↗</div>
+          <div>Top Right</div>
+        </div>
+        <div class="position-option" data-position="middle-left">
+          <div class="position-option-icon">←</div>
+          <div>Middle Left</div>
+        </div>
+        <div class="position-option" data-position="middle-right">
+          <div class="position-option-icon">→</div>
+          <div>Middle Right</div>
+        </div>
+        <div class="position-option" data-position="bottom-left">
+          <div class="position-option-icon">↙</div>
+          <div>Bottom Left</div>
+        </div>
+        <div class="position-option" data-position="bottom-right">
+          <div class="position-option-icon">↘</div>
+          <div>Bottom Right</div>
+        </div>
       </div>
+      <input type="hidden" id="position" value="middle-right">
       
-      <label for="horizontalOffset">
-        Distance from Edge: <span id="horizontalOffsetValue" class="range-value">20</span>px
+      <label for="offset">
+        Distance from Edge: <span id="offsetValue" class="range-value">20</span>px
       </label>
-      <input type="range" id="horizontalOffset" min="0" max="100" value="20">
+      <input type="range" id="offset" min="0" max="100" value="20">
       
       <label for="verticalSpacing">
         Spacing Between Buttons: <span id="verticalSpacingValue" class="range-value">10</span>px

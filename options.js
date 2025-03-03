@@ -1,9 +1,7 @@
 // Default settings
 const defaultSettings = {
-  horizontalPosition: "right",
-  verticalPosition: "bottom",
-  customVerticalPosition: 50,
-  horizontalOffset: 20,
+  position: "middle-right",
+  offset: 20,
   verticalSpacing: 10,
   opacity: 0.5,
   hoverOpacity: 1,
@@ -13,19 +11,10 @@ const defaultSettings = {
 };
 
 // DOM elements
-const horizontalPositionSelect = document.getElementById("horizontalPosition");
-const verticalPositionSelect = document.getElementById("verticalPosition");
-const customVerticalPositionContainer = document.getElementById(
-  "customVerticalPositionContainer"
-);
-const customVerticalPositionInput = document.getElementById(
-  "customVerticalPosition"
-);
-const customVerticalPositionValue = document.getElementById(
-  "customVerticalPositionValue"
-);
-const horizontalOffsetInput = document.getElementById("horizontalOffset");
-const horizontalOffsetValue = document.getElementById("horizontalOffsetValue");
+const positionInput = document.getElementById("position");
+const positionOptions = document.querySelectorAll(".position-option");
+const offsetInput = document.getElementById("offset");
+const offsetValue = document.getElementById("offsetValue");
 const verticalSpacingInput = document.getElementById("verticalSpacing");
 const verticalSpacingValue = document.getElementById("verticalSpacingValue");
 const opacityInput = document.getElementById("opacity");
@@ -52,18 +41,11 @@ function loadSettings() {
     const settings = data.scrollToSettings || defaultSettings;
 
     // Apply settings to form
-    horizontalPositionSelect.value =
-      settings.horizontalPosition || defaultSettings.horizontalPosition;
-    verticalPositionSelect.value =
-      settings.verticalPosition || defaultSettings.verticalPosition;
-    customVerticalPositionInput.value =
-      settings.customVerticalPosition || defaultSettings.customVerticalPosition;
-    customVerticalPositionValue.textContent =
-      settings.customVerticalPosition || defaultSettings.customVerticalPosition;
-    horizontalOffsetInput.value =
-      settings.horizontalOffset || defaultSettings.horizontalOffset;
-    horizontalOffsetValue.textContent =
-      settings.horizontalOffset || defaultSettings.horizontalOffset;
+    positionInput.value = settings.position || defaultSettings.position;
+    updateSelectedPositionOption(settings.position || defaultSettings.position);
+
+    offsetInput.value = settings.offset || defaultSettings.offset;
+    offsetValue.textContent = settings.offset || defaultSettings.offset;
     verticalSpacingInput.value =
       settings.verticalSpacing || defaultSettings.verticalSpacing;
     verticalSpacingValue.textContent =
@@ -78,25 +60,32 @@ function loadSettings() {
     hideDelayInput.value = settings.hideDelay;
     hideDelayValue.textContent = settings.hideDelay;
 
-    // Show/hide custom vertical position input
-    if (settings.verticalPosition === "custom") {
-      customVerticalPositionContainer.style.display = "block";
-    } else {
-      customVerticalPositionContainer.style.display = "none";
-    }
-
     // Update preview
     updatePreview();
   });
 }
 
+// Update selected position option
+function updateSelectedPositionOption(position) {
+  // Remove selected class from all options
+  positionOptions.forEach((option) => {
+    option.classList.remove("selected");
+  });
+
+  // Add selected class to the matching option
+  const selectedOption = document.querySelector(
+    `.position-option[data-position="${position}"]`
+  );
+  if (selectedOption) {
+    selectedOption.classList.add("selected");
+  }
+}
+
 // Save settings
 function saveSettings() {
   const settings = {
-    horizontalPosition: horizontalPositionSelect.value,
-    verticalPosition: verticalPositionSelect.value,
-    customVerticalPosition: parseInt(customVerticalPositionInput.value),
-    horizontalOffset: parseInt(horizontalOffsetInput.value),
+    position: positionInput.value,
+    offset: parseInt(offsetInput.value),
     verticalSpacing: parseInt(verticalSpacingInput.value),
     opacity: parseFloat(opacityInput.value),
     hoverOpacity: parseFloat(hoverOpacityInput.value),
@@ -117,13 +106,11 @@ function saveSettings() {
 // Reset settings
 function resetSettings() {
   // Apply default settings to form
-  horizontalPositionSelect.value = defaultSettings.horizontalPosition;
-  verticalPositionSelect.value = defaultSettings.verticalPosition;
-  customVerticalPositionInput.value = defaultSettings.customVerticalPosition;
-  customVerticalPositionValue.textContent =
-    defaultSettings.customVerticalPosition;
-  horizontalOffsetInput.value = defaultSettings.horizontalOffset;
-  horizontalOffsetValue.textContent = defaultSettings.horizontalOffset;
+  positionInput.value = defaultSettings.position;
+  updateSelectedPositionOption(defaultSettings.position);
+
+  offsetInput.value = defaultSettings.offset;
+  offsetValue.textContent = defaultSettings.offset;
   verticalSpacingInput.value = defaultSettings.verticalSpacing;
   verticalSpacingValue.textContent = defaultSettings.verticalSpacing;
   opacityInput.value = defaultSettings.opacity;
@@ -136,74 +123,64 @@ function resetSettings() {
   hideDelayInput.value = defaultSettings.hideDelay;
   hideDelayValue.textContent = defaultSettings.hideDelay;
 
-  // Hide custom vertical position input
-  customVerticalPositionContainer.style.display = "none";
-
   // Update preview
   updatePreview();
 }
 
 // Update preview
 function updatePreview() {
-  const horizontalPosition = horizontalPositionSelect.value;
-  const verticalPosition = verticalPositionSelect.value;
-  const customVerticalPosition = customVerticalPositionInput.value;
-  const horizontalOffset = horizontalOffsetInput.value;
+  const position = positionInput.value;
+  const offset = offsetInput.value;
   const verticalSpacing = verticalSpacingInput.value;
   const buttonSize = buttonSizeInput.value;
   const opacity = opacityInput.value;
 
+  // Parse position
+  const [vertical, horizontal] = position.split("-");
+
+  // Reset all position properties
+  previewTopBtn.style.top = "auto";
+  previewTopBtn.style.bottom = "auto";
+  previewTopBtn.style.left = "auto";
+  previewTopBtn.style.right = "auto";
+  previewTopBtn.style.transform = "none";
+  previewBottomBtn.style.top = "auto";
+  previewBottomBtn.style.bottom = "auto";
+  previewBottomBtn.style.left = "auto";
+  previewBottomBtn.style.right = "auto";
+  previewBottomBtn.style.transform = "none";
+
   // Position buttons horizontally
-  if (horizontalPosition === "right") {
-    previewTopBtn.style.right = `${parseInt(horizontalOffset) + 8}px`;
-    previewTopBtn.style.left = "auto";
-    previewBottomBtn.style.right = `${parseInt(horizontalOffset) + 8}px`;
-    previewBottomBtn.style.left = "auto";
+  if (horizontal === "left") {
+    previewTopBtn.style.left = `${parseInt(offset)}px`;
+    previewBottomBtn.style.left = `${parseInt(offset)}px`;
   } else {
-    previewTopBtn.style.left = `${parseInt(horizontalOffset) + 8}px`;
-    previewTopBtn.style.right = "auto";
-    previewBottomBtn.style.left = `${parseInt(horizontalOffset) + 8}px`;
-    previewBottomBtn.style.right = "auto";
+    // right
+    previewTopBtn.style.right = `${parseInt(offset)}px`;
+    previewBottomBtn.style.right = `${parseInt(offset)}px`;
   }
 
   // Position buttons vertically
   const previewHeight = preview.clientHeight;
 
-  if (verticalPosition === "top") {
-    previewTopBtn.style.top = "20px";
+  if (vertical === "top") {
+    previewTopBtn.style.top = `${parseInt(offset)}px`;
     previewBottomBtn.style.top = `${
-      20 + parseInt(buttonSize) + parseInt(verticalSpacing)
+      parseInt(offset) + parseInt(buttonSize) + parseInt(verticalSpacing)
     }px`;
-    previewTopBtn.style.bottom = "auto";
-    previewBottomBtn.style.bottom = "auto";
-  } else if (verticalPosition === "middle") {
+  } else if (vertical === "middle") {
     const middlePosition =
       previewHeight / 2 - parseInt(buttonSize) - parseInt(verticalSpacing) / 2;
     previewTopBtn.style.top = `${middlePosition}px`;
     previewBottomBtn.style.top = `${
       middlePosition + parseInt(buttonSize) + parseInt(verticalSpacing)
     }px`;
-    previewTopBtn.style.bottom = "auto";
-    previewBottomBtn.style.bottom = "auto";
-  } else if (verticalPosition === "custom") {
-    const customPosition =
-      (parseInt(customVerticalPosition) / 100) * previewHeight;
-    previewTopBtn.style.top = `${
-      customPosition - parseInt(buttonSize) - parseInt(verticalSpacing) / 2
-    }px`;
-    previewBottomBtn.style.top = `${
-      customPosition + parseInt(verticalSpacing) / 2
-    }px`;
-    previewTopBtn.style.bottom = "auto";
-    previewBottomBtn.style.bottom = "auto";
   } else {
     // bottom
+    previewBottomBtn.style.bottom = `${parseInt(offset)}px`;
     previewTopBtn.style.bottom = `${
-      20 + parseInt(buttonSize) + parseInt(verticalSpacing)
+      parseInt(offset) + parseInt(buttonSize) + parseInt(verticalSpacing)
     }px`;
-    previewBottomBtn.style.bottom = "20px";
-    previewTopBtn.style.top = "auto";
-    previewBottomBtn.style.top = "auto";
   }
 
   // Set button size
@@ -218,18 +195,13 @@ function updatePreview() {
 }
 
 // Event listeners
-horizontalOffsetInput.addEventListener("input", () => {
-  horizontalOffsetValue.textContent = horizontalOffsetInput.value;
+offsetInput.addEventListener("input", () => {
+  offsetValue.textContent = offsetInput.value;
   updatePreview();
 });
 
 verticalSpacingInput.addEventListener("input", () => {
   verticalSpacingValue.textContent = verticalSpacingInput.value;
-  updatePreview();
-});
-
-customVerticalPositionInput.addEventListener("input", () => {
-  customVerticalPositionValue.textContent = customVerticalPositionInput.value;
   updatePreview();
 });
 
@@ -251,15 +223,14 @@ hideDelayInput.addEventListener("input", () => {
   hideDelayValue.textContent = hideDelayInput.value;
 });
 
-horizontalPositionSelect.addEventListener("change", updatePreview);
-
-verticalPositionSelect.addEventListener("change", () => {
-  if (verticalPositionSelect.value === "custom") {
-    customVerticalPositionContainer.style.display = "block";
-  } else {
-    customVerticalPositionContainer.style.display = "none";
-  }
-  updatePreview();
+// Position option click handler
+positionOptions.forEach((option) => {
+  option.addEventListener("click", () => {
+    const position = option.getAttribute("data-position");
+    positionInput.value = position;
+    updateSelectedPositionOption(position);
+    updatePreview();
+  });
 });
 
 saveButton.addEventListener("click", saveSettings);

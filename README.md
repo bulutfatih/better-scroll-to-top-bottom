@@ -5,15 +5,14 @@ A Chrome extension that adds convenient scroll-to-top and scroll-to-bottom butto
 ## Features
 
 - Adds buttons to quickly scroll to the top or bottom of any webpage
-- Buttons are positioned next to the scrollbar for easy access
+- Buttons can be positioned in 6 different locations on the screen
 - Buttons are semi-transparent when not in use to avoid distractions
 - Buttons automatically hide when they're not needed (e.g., hiding the "scroll to top" button when already at the top)
 - Fully customizable through the options page
 
 ## Customization Options
 
-- **Horizontal Position**: Choose between left or right side of the screen
-- **Vertical Position**: Position buttons at the top, middle, bottom, or a custom position
+- **Button Position**: Choose from 6 different positions (top-left, top-right, middle-left, middle-right, bottom-left, bottom-right)
 - **Distance from Edge**: Adjust how far the buttons are from the edge of the screen
 - **Spacing Between Buttons**: Control the gap between the up and down buttons
 - **Opacity**: Set the transparency level for both normal state and hover state

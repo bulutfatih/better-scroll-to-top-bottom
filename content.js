@@ -1,9 +1,7 @@
 // Default settings
 let settings = {
-  horizontalPosition: "right", // 'right' or 'left'
-  verticalPosition: "bottom", // 'top', 'middle', 'bottom', or 'custom'
-  customVerticalPosition: 50, // percentage from top (0-100)
-  horizontalOffset: 20, // distance from the edge in pixels
+  position: "middle-right", // 'top-left', 'top-right', 'middle-left', etc.
+  offset: 20, // distance from the edge in pixels
   verticalSpacing: 10, // spacing between buttons in pixels
   opacity: 0.5, // opacity when not hovering
   hoverOpacity: 1, // opacity when hovering
@@ -70,36 +68,33 @@ function initScrollButtons() {
 }
 
 function applySettings() {
-  // Horizontal position
-  container.style.right =
-    settings.horizontalPosition === "right"
-      ? `${settings.horizontalOffset}px`
-      : "auto";
-  container.style.left =
-    settings.horizontalPosition === "left"
-      ? `${settings.horizontalOffset}px`
-      : "auto";
-
-  // Vertical position
-  const windowHeight = window.innerHeight;
+  // Parse position
+  const [vertical, horizontal] = settings.position.split("-");
 
   // Reset all position properties
   container.style.top = "auto";
   container.style.bottom = "auto";
+  container.style.left = "auto";
+  container.style.right = "auto";
   container.style.transform = "none";
 
-  if (settings.verticalPosition === "top") {
-    container.style.top = "20px";
-  } else if (settings.verticalPosition === "middle") {
+  // Position horizontally
+  if (horizontal === "left") {
+    container.style.left = `${settings.offset}px`;
+  } else {
+    // right
+    container.style.right = `${settings.offset}px`;
+  }
+
+  // Position vertically
+  if (vertical === "top") {
+    container.style.top = `${settings.offset}px`;
+  } else if (vertical === "middle") {
     container.style.top = "50%";
-    container.style.transform = "translateY(-50%)";
-  } else if (settings.verticalPosition === "custom") {
-    const customPosition = `${settings.customVerticalPosition}%`;
-    container.style.top = customPosition;
     container.style.transform = "translateY(-50%)";
   } else {
     // bottom
-    container.style.bottom = "50px";
+    container.style.bottom = `${settings.offset}px`;
   }
 
   // Spacing between buttons
