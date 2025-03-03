@@ -30,7 +30,7 @@ const hideDelayInput = document.getElementById("hideDelay");
 const hideDelayValue = document.getElementById("hideDelayValue");
 const saveButton = document.getElementById("save");
 const resetButton = document.getElementById("reset");
-const savedMessage = document.getElementById("savedMessage");
+const feedbackMessage = document.getElementById("feedbackMessage");
 
 // Preview elements
 const preview = document.getElementById("preview");
@@ -105,6 +105,26 @@ function getSelectedScrollBehavior() {
   return defaultSettings.scrollBehavior;
 }
 
+// Show feedback message
+function showFeedback(message, isSuccess = true) {
+  feedbackMessage.textContent = message;
+  feedbackMessage.style.backgroundColor = isSuccess ? "#4caf50" : "#ff9800";
+  feedbackMessage.style.display = "block";
+
+  // Add animation effect
+  feedbackMessage.style.opacity = "0";
+  setTimeout(() => {
+    feedbackMessage.style.opacity = "1";
+  }, 10);
+
+  setTimeout(() => {
+    feedbackMessage.style.opacity = "0";
+    setTimeout(() => {
+      feedbackMessage.style.display = "none";
+    }, 300);
+  }, 3000);
+}
+
 // Save settings
 function saveSettings() {
   const settings = {
@@ -120,15 +140,19 @@ function saveSettings() {
 
   chrome.storage.sync.set({ scrollToSettings: settings }, () => {
     // Show saved message
-    savedMessage.style.display = "block";
-    setTimeout(() => {
-      savedMessage.style.display = "none";
-    }, 3000);
+    showFeedback("Settings saved successfully!");
   });
 }
 
 // Reset settings
 function resetSettings() {
+  // Ask for confirmation
+  if (
+    !confirm("Are you sure you want to reset all settings to default values?")
+  ) {
+    return;
+  }
+
   // Apply default settings to form
   positionInput.value = defaultSettings.position;
   updateSelectedPositionOption(defaultSettings.position);
@@ -154,6 +178,12 @@ function resetSettings() {
 
   // Update preview
   updatePreview();
+
+  // Save the default settings to storage
+  chrome.storage.sync.set({ scrollToSettings: defaultSettings }, () => {
+    // Show reset message
+    showFeedback("Settings have been reset to defaults!");
+  });
 }
 
 // Update preview

@@ -63,6 +63,8 @@
       display: flex;
       justify-content: flex-end;
       gap: 10px;
+      position: sticky;
+      bottom: 0;
     }
     
     button {
@@ -119,14 +121,20 @@
       font-size: 16px;
     }
     
-    .saved-message {
+    .feedback-message {
       display: none;
-      background-color: #4caf50;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       color: white;
-      padding: 10px;
+      padding: 12px 20px;
       border-radius: 4px;
-      margin-bottom: 20px;
       text-align: center;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      max-width: 80%;
     }
     
     .position-grid {
@@ -185,10 +193,10 @@
   </style>
 </head>
 <body>
+  <div id="feedbackMessage" class="feedback-message">Settings saved successfully!</div>
+  
   <div class="container">
     <h1>Scroll To Extension Options</h1>
-    
-    <div id="savedMessage" class="saved-message">Settings saved successfully!</div>
     
     <div class="preview" id="preview">
       <div class="preview-scrollbar"></div>
