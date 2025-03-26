@@ -23,7 +23,12 @@ try {
 }
 
 // Copy static files
-const staticFiles = ["manifest.json", "options.html", "styles.css"];
+const staticFiles = [
+  "manifest.json",
+  "options.html",
+  "popup.html",
+  "styles.css",
+];
 for (const file of staticFiles) {
   const sourcePath = path.join("src", file);
   const destPath = path.join("dist", file);

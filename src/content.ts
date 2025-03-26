@@ -38,14 +38,49 @@ const defaultSettings: ScrollToSettings = {
   hideDelay: 1500,
 };
 
-// Load settings from storage
-chrome.storage.sync.get("scrollToSettings", (data) => {
-  const storedSettings = data.scrollToSettings as ScrollToSettings | undefined;
-  const settings: ScrollToSettings = storedSettings
-    ? { ...defaultSettings, ...storedSettings }
-    : defaultSettings;
+// Check if the extension should be enabled
+function shouldEnableExtension(callback: (enabled: boolean) => void): void {
+  // Check if disabled for specific domains
+  chrome.storage.sync.get(["disabledDomains", "disabledUntil"], (data) => {
+    // Check if disabled until a certain time
+    if (data.disabledUntil) {
+      const now = Date.now();
+      if (now < data.disabledUntil) {
+        callback(false);
+        return;
+      }
+    }
 
-  initScrollButtons(settings);
+    // Check if disabled for current domain
+    if (data.disabledDomains && Array.isArray(data.disabledDomains)) {
+      const currentDomain = window.location.hostname;
+      if (data.disabledDomains.includes(currentDomain)) {
+        callback(false);
+        return;
+      }
+    }
+
+    // If not disabled, enable extension
+    callback(true);
+  });
+}
+
+// Load settings from storage
+shouldEnableExtension((enabled) => {
+  if (!enabled) {
+    return; // Don't initialize if disabled
+  }
+
+  chrome.storage.sync.get("scrollToSettings", (data) => {
+    const storedSettings = data.scrollToSettings as
+      | ScrollToSettings
+      | undefined;
+    const settings: ScrollToSettings = storedSettings
+      ? { ...defaultSettings, ...storedSettings }
+      : defaultSettings;
+
+    initScrollButtons(settings);
+  });
 });
 
 function initScrollButtons(settings: ScrollToSettings): void {

@@ -33,6 +33,9 @@ const feedbackMessage = document.getElementById("feedbackMessage");
 const preview = document.getElementById("preview");
 const previewTopBtn = document.getElementById("previewTopBtn");
 const previewBottomBtn = document.getElementById("previewBottomBtn");
+const domainList = document.getElementById("domainList");
+const newDomainInput = document.getElementById("newDomain");
+const addDomainBtn = document.getElementById("addDomain");
 // Helper function to capitalize first letter
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -88,8 +91,86 @@ function loadSettings() {
         else {
             resetSettings();
         }
+        // Load disabled domains
+        loadDisabledDomains();
         // Update preview
         updatePreview();
+    });
+}
+// Load disabled domains list
+function loadDisabledDomains() {
+    chrome.storage.sync.get("disabledDomains", (data) => {
+        const disabledDomains = data.disabledDomains || [];
+        updateDomainList(disabledDomains);
+    });
+}
+// Update the domain list in the UI
+function updateDomainList(domains) {
+    // Clear current list
+    domainList.innerHTML = "";
+    if (domains.length === 0) {
+        // Show empty message
+        const emptyMessage = document.createElement("div");
+        emptyMessage.className = "empty-message";
+        emptyMessage.textContent = "No domains are currently disabled";
+        domainList.appendChild(emptyMessage);
+        return;
+    }
+    // Add each domain to the list
+    for (const domain of domains) {
+        const domainItem = document.createElement("div");
+        domainItem.className = "domain-item";
+        const domainName = document.createElement("div");
+        domainName.className = "domain-name";
+        domainName.textContent = domain;
+        const removeButton = document.createElement("button");
+        removeButton.className = "remove-domain";
+        removeButton.textContent = "×";
+        removeButton.title = "Remove domain";
+        removeButton.addEventListener("click", () => removeDomain(domain));
+        domainItem.appendChild(domainName);
+        domainItem.appendChild(removeButton);
+        domainList.appendChild(domainItem);
+    }
+}
+// Remove a domain from the blacklist
+function removeDomain(domain) {
+    chrome.storage.sync.get("disabledDomains", (data) => {
+        let disabledDomains = data.disabledDomains || [];
+        disabledDomains = disabledDomains.filter((d) => d !== domain);
+        chrome.storage.sync.set({ disabledDomains }, () => {
+            updateDomainList(disabledDomains);
+            showFeedback(`Removed ${domain} from disabled domains`, true);
+        });
+    });
+}
+// Add a domain to the blacklist
+function addDomain() {
+    const domain = newDomainInput.value.trim().toLowerCase();
+    if (!domain) {
+        showFeedback("Please enter a valid domain", false);
+        return;
+    }
+    // Simple domain validation
+    const domainRegex = /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/;
+    if (!domainRegex.test(domain)) {
+        showFeedback("Please enter a valid domain (e.g., example.com)", false);
+        return;
+    }
+    chrome.storage.sync.get("disabledDomains", (data) => {
+        const disabledDomains = data.disabledDomains || [];
+        // Check if domain is already in the list
+        if (disabledDomains.includes(domain)) {
+            showFeedback(`${domain} is already in the list`, false);
+            return;
+        }
+        // Add domain to the list
+        disabledDomains.push(domain);
+        chrome.storage.sync.set({ disabledDomains }, () => {
+            updateDomainList(disabledDomains);
+            newDomainInput.value = "";
+            showFeedback(`Added ${domain} to disabled domains`, true);
+        });
     });
 }
 // Save settings to storage
@@ -170,6 +251,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+    // Add domain event listeners
+    addDomainBtn.addEventListener("click", addDomain);
+    newDomainInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            addDomain();
+        }
+    });
 });
 saveButton.addEventListener("click", saveSettings);
 resetButton.addEventListener("click", resetSettings);
