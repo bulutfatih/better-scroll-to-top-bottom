@@ -28,7 +28,7 @@ const hideDelayInput = document.getElementById("hideDelay");
 const hideDelayValue = document.getElementById("hideDelayValue");
 const saveButton = document.getElementById("save");
 const resetButton = document.getElementById("reset");
-const feedbackMessage = document.getElementById("feedbackMessage");
+const feedbackMessage = document.getElementById("feedback");
 // Preview elements
 const preview = document.getElementById("preview");
 const previewTopBtn = document.getElementById("previewTopBtn");

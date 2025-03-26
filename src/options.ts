@@ -67,9 +67,7 @@ const hideDelayValue = document.getElementById(
 ) as HTMLSpanElement;
 const saveButton = document.getElementById("save") as HTMLButtonElement;
 const resetButton = document.getElementById("reset") as HTMLButtonElement;
-const feedbackMessage = document.getElementById(
-  "feedbackMessage"
-) as HTMLDivElement;
+const feedbackMessage = document.getElementById("feedback") as HTMLDivElement;
 
 // Preview elements
 const preview = document.getElementById("preview") as HTMLElement;
