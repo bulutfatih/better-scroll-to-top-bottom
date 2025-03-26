@@ -1,17 +1,67 @@
+:root {
+  /* Dark theme (default) */
+  --background: #000;
+  --surface: #111;
+  --surface-hover: #222;
+  --border: #333;
+  --text-primary: #fff;
+  --text-secondary: #999;
+  --text-tertiary: #666;
+  --toggle-bg: #333;
+  --toggle-handle: #666;
+  --toggle-handle-active: #fff;
+  --divider: #333;
+  --button-bg: #000;
+  --button-border: #333;
+  --button-hover-bg: #222;
+  --button-hover-border: #444;
+  --notification-bg: #222;
+  --notification-border: #333;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    /* Light theme */
+    --background: #fff;
+    --surface: #fafafa;
+    --surface-hover: #f5f5f5;
+    --border: #eaeaea;
+    --text-primary: #000;
+    --text-secondary: #666;
+    --text-tertiary: #999;
+    --toggle-bg: #eaeaea;
+    --toggle-handle: #999;
+    --toggle-handle-active: #000;
+    --divider: #eaeaea;
+    --button-bg: #fff;
+    --button-border: #eaeaea;
+    --button-hover-bg: #fafafa;
+    --button-hover-border: #999;
+    --notification-bg: #fafafa;
+    --notification-border: #eaeaea;
+  }
+}
+
 body {
-  font-family: Arial, sans-serif;
-  width: 250px;
-  padding: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  width: 300px;
+  padding: 16px;
   margin: 0;
-  background-color: #f9f9f9;
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1 {
-  font-size: 16px;
-  color: #4285f4;
+  font-size: 14px;
+  color: var(--text-primary);
   margin-top: 0;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   text-align: center;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .toggle-item {
@@ -21,31 +71,36 @@ h1 {
   padding: 10px 8px;
   border-radius: 4px;
   margin-bottom: 8px;
+  gap: 8px;
+  transition: background-color 0.15s ease;
 }
 
 .toggle-item:hover {
-  background-color: #e8f0fe;
+  background-color: var(--surface-hover);
 }
 
 .toggle-item-icon {
   margin-right: 10px;
-  color: #5f6368;
-  font-size: 18px;
-  width: 18px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  width: 16px;
   text-align: center;
 }
 
 .toggle-item-text {
   flex: 1;
   font-size: 14px;
-  color: #202124;
+  color: var(--text-primary);
+  font-weight: 500;
+  word-break: break-all;
 }
 
 .toggle-switch {
   position: relative;
   display: inline-block;
-  width: 40px;
+  width: 36px;
   height: 20px;
+  flex-shrink: 0;
 }
 
 .toggle-switch input {
@@ -61,8 +116,8 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
-  transition: .3s;
+  background-color: var(--toggle-bg);
+  transition: .2s;
   border-radius: 34px;
 }
 
@@ -71,19 +126,16 @@ h1 {
   content: "";
   height: 16px;
   width: 16px;
-  left: 3px;
+  left: 2px;
   bottom: 2px;
-  background-color: white;
-  transition: .3s;
+  background-color: var(--toggle-handle);
+  transition: .2s;
   border-radius: 50%;
 }
 
-input:checked + .toggle-slider {
-  background-color: #4285f4;
-}
-
 input:checked + .toggle-slider:before {
-  transform: translateX(18px);
+  transform: translateX(16px);
+  background-color: var(--toggle-handle-active);
 }
 
 .menu-item {
@@ -91,58 +143,61 @@ input:checked + .toggle-slider:before {
   align-items: center;
   padding: 10px 8px;
   cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+  border-radius: 5px;
+  transition: background-color 0.15s ease;
 }
 
 .menu-item:hover {
-  background-color: #e8f0fe;
+  background-color: var(--surface-hover);
 }
 
 .menu-item-icon {
   margin-right: 10px;
-  color: #5f6368;
-  font-size: 18px;
-  width: 18px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  width: 16px;
   text-align: center;
 }
 
 .divider {
   height: 1px;
-  background-color: #e0e0e0;
-  margin: 8px 0;
+  background-color: var(--divider);
+  margin: 12px 0;
 }
 
 .version {
   font-size: 11px;
-  color: #5f6368;
+  color: var(--text-tertiary);
   text-align: center;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .reload-notification {
   display: none;
-  background-color: #fff3cd;
-  border: 1px solid #ffeeba;
-  color: #856404;
-  padding: 8px;
-  border-radius: 4px;
-  margin: 8px 0;
+  background-color: var(--notification-bg);
+  border: 1px solid var(--notification-border);
+  color: var(--text-primary);
+  padding: 10px;
+  border-radius: 5px;
+  margin: 12px 0;
   text-align: center;
   font-size: 12px;
 }
 
 .reload-button {
-  background-color: #4285f4;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background-color: var(--button-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--button-border);
+  border-radius: 5px;
   padding: 6px 12px;
-  margin-top: 6px;
+  margin-top: 8px;
   cursor: pointer;
   font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s ease;
 }
 
 .reload-button:hover {
-  background-color: #3367d6;
+  background-color: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
 } 
