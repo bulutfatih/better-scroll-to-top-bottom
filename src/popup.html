@@ -8,27 +8,27 @@
 <body>
   <h1>Scroll To Extension</h1>
   
-  <div class="toggle-item" id="domain-toggle-container">
+  <label class="toggle-item" for="domain-toggle" id="domain-toggle-container">
     <div style="display: flex; align-items: center;">
       <div class="toggle-item-icon">&#128683;</div>
       <div class="toggle-item-text" id="domain-text">Disable for this domain</div>
     </div>
-    <label class="toggle-switch">
+    <div class="toggle-switch">
       <input type="checkbox" id="domain-toggle">
       <span class="toggle-slider"></span>
-    </label>
-  </div>
+    </div>
+  </label>
   
-  <div class="toggle-item" id="today-toggle-container">
+  <label class="toggle-item" for="today-toggle" id="today-toggle-container">
     <div style="display: flex; align-items: center;">
       <div class="toggle-item-icon">&#8987;</div>
       <div class="toggle-item-text" id="today-text">Disable for today</div>
     </div>
-    <label class="toggle-switch">
+    <div class="toggle-switch">
       <input type="checkbox" id="today-toggle">
       <span class="toggle-slider"></span>
-    </label>
-  </div>
+    </div>
+  </label>
   
   <div class="reload-notification" id="reload-notification">
     <div>Settings changed.<br>Reload page to apply changes.</div>
