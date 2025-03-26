@@ -22,47 +22,45 @@ try {
   process.exit(1);
 }
 
-// Copy static files
-const staticFiles = [
+// Copy specific files from src to dist
+const filesToCopy = [
   "manifest.json",
   "options.html",
   "popup.html",
   "styles.css",
+  "options.css",
+  "popup.css",
 ];
-for (const file of staticFiles) {
-  const sourcePath = path.join("src", file);
-  const destPath = path.join("dist", file);
 
-  if (fs.existsSync(sourcePath)) {
-    fs.copyFileSync(sourcePath, destPath);
-    console.log(`Copied ${sourcePath} to ${destPath}`);
-  } else {
-    console.warn(`Warning: ${sourcePath} does not exist`);
+for (const file of filesToCopy) {
+  try {
+    fs.copyFileSync(`src/${file}`, `dist/${file}`);
+    console.log(`Copied src/${file} to dist/${file}`);
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      console.log(`Warning: ${file} not found in src directory, skipping`);
+    } else {
+      console.error(`Error copying ${file}: ${err.message}`);
+    }
   }
 }
 
-// Copy icons
-const iconsDir = path.join("src", "icons");
-const distIconsDir = path.join("dist", "icons");
+// Create icons directory in dist if it doesn't exist
+if (!fs.existsSync("dist/icons")) {
+  fs.mkdirSync("dist/icons");
+}
 
-if (fs.existsSync(iconsDir)) {
-  // Create icons directory in dist if it doesn't exist
-  if (!fs.existsSync(distIconsDir)) {
-    fs.mkdirSync(distIconsDir);
-  }
-
-  // Copy all icon files
-  const iconFiles = fs.readdirSync(iconsDir);
+// Copy icon files from src/icons to dist/icons
+try {
+  const iconFiles = fs.readdirSync("src/icons");
   for (const file of iconFiles) {
     if (file.endsWith(".png") || file.endsWith(".svg")) {
-      const sourcePath = path.join(iconsDir, file);
-      const destPath = path.join(distIconsDir, file);
-      fs.copyFileSync(sourcePath, destPath);
-      console.log(`Copied ${sourcePath} to ${destPath}`);
+      fs.copyFileSync(`src/icons/${file}`, `dist/icons/${file}`);
+      console.log(`Copied src/icons/${file} to dist/icons/${file}`);
     }
   }
-} else {
-  console.warn(`Warning: ${iconsDir} directory does not exist`);
+} catch (err) {
+  console.error(`Error copying icon files: ${err.message}`);
 }
 
 console.log("Build completed successfully!");
