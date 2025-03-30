@@ -17,7 +17,6 @@ interface OptionsScrollToSettings {
   hoverOpacity: number;
   scrollBehavior: OptionsScrollBehavior;
   buttonSize: number;
-  hideDelay: number;
 }
 
 // Default settings
@@ -29,7 +28,6 @@ const optionsDefaultSettings: OptionsScrollToSettings = {
   hoverOpacity: 1,
   scrollBehavior: "smooth",
   buttonSize: 40,
-  hideDelay: 1500,
 };
 
 // DOM Elements
@@ -61,29 +59,13 @@ const buttonSizeInput = document.getElementById(
 const buttonSizeValue = document.getElementById(
   "buttonSizeValue"
 ) as HTMLSpanElement;
-const hideDelayInput = document.getElementById("hideDelay") as HTMLInputElement;
-const hideDelayValue = document.getElementById(
-  "hideDelayValue"
-) as HTMLSpanElement;
 const saveButton = document.getElementById("save") as HTMLButtonElement;
 const resetButton = document.getElementById("reset") as HTMLButtonElement;
 const feedbackMessage = document.getElementById("feedback") as HTMLDivElement;
 
-// Preview elements
-const preview = document.getElementById("preview") as HTMLElement;
-const previewTopBtn = document.getElementById("previewTopBtn") as HTMLElement;
-const previewBottomBtn = document.getElementById(
-  "previewBottomBtn"
-) as HTMLElement;
-
 const domainList = document.getElementById("domainList") as HTMLDivElement;
 const newDomainInput = document.getElementById("newDomain") as HTMLInputElement;
 const addDomainBtn = document.getElementById("addDomain") as HTMLButtonElement;
-
-// Helper function to capitalize first letter
-function capitalizeFirstLetter(string: string): string {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 // Update selected position option
 function updateSelectedPositionOption(position: string): void {
@@ -141,8 +123,6 @@ function loadSettings(): void {
 
       buttonSizeInput.value = settings.buttonSize.toString();
       buttonSizeValue.textContent = settings.buttonSize.toString();
-      hideDelayInput.value = settings.hideDelay.toString();
-      hideDelayValue.textContent = settings.hideDelay.toString();
     } else {
       resetSettings();
     }
@@ -266,7 +246,6 @@ function saveSettings(): void {
     hoverOpacity: Number.parseFloat(hoverOpacityInput.value),
     scrollBehavior: selectedScrollBehavior,
     buttonSize: Number.parseInt(buttonSizeInput.value, 10),
-    hideDelay: Number.parseInt(hideDelayInput.value, 10),
   };
 
   chrome.storage.sync.set({ scrollToSettings: settings }, () => {
@@ -300,8 +279,6 @@ function resetSettings(): void {
 
     buttonSizeInput.value = optionsDefaultSettings.buttonSize.toString();
     buttonSizeValue.textContent = optionsDefaultSettings.buttonSize.toString();
-    hideDelayInput.value = optionsDefaultSettings.hideDelay.toString();
-    hideDelayValue.textContent = optionsDefaultSettings.hideDelay.toString();
 
     saveSettings();
     showFeedback("Settings reset to defaults!", true);
@@ -315,7 +292,6 @@ function updateDisplayValues(): void {
   opacityValue.textContent = opacityInput.value;
   hoverOpacityValue.textContent = hoverOpacityInput.value;
   buttonSizeValue.textContent = buttonSizeInput.value;
-  hideDelayValue.textContent = hideDelayInput.value;
 
   // Update preview
   updatePreview();
@@ -356,63 +332,70 @@ verticalSpacingInput.addEventListener("input", updateDisplayValues);
 opacityInput.addEventListener("input", updateDisplayValues);
 hoverOpacityInput.addEventListener("input", updateDisplayValues);
 buttonSizeInput.addEventListener("input", updateDisplayValues);
-hideDelayInput.addEventListener("input", updateDisplayValues);
 
 // Update preview
 function updatePreview(): void {
   const position = positionSelect.value;
-  const offset = offsetInput.value;
-  const verticalSpacing = verticalSpacingInput.value;
-  const buttonSize = buttonSizeInput.value;
+  const offset = Number.parseInt(offsetInput.value, 10);
+  const verticalSpacing = Number.parseInt(verticalSpacingInput.value, 10);
+  const buttonSize = Number.parseInt(buttonSizeInput.value, 10);
   const opacity = opacityInput.value;
+  const hoverOpacity = hoverOpacityInput.value;
+
+  // Get the container element
+  const scrollContainer = document.getElementById(
+    "scrollButtons"
+  ) as HTMLElement;
+
+  // Reset all position properties of the container
+  scrollContainer.style.top = "auto";
+  scrollContainer.style.bottom = "auto";
+  scrollContainer.style.left = "auto";
+  scrollContainer.style.right = "auto";
+  scrollContainer.style.transform = "none";
+
+  // Set opacity values using CSS variables
+  document.documentElement.style.setProperty("--current-opacity", opacity);
+  document.documentElement.style.setProperty(
+    "--current-hover-opacity",
+    hoverOpacity
+  );
 
   // Parse position
   const [vertical, horizontal] = position.split("-");
 
-  // Reset all position properties
-  previewTopBtn.style.top = "auto";
-  previewTopBtn.style.bottom = "auto";
-  previewTopBtn.style.left = "auto";
-  previewTopBtn.style.right = "auto";
-  previewBottomBtn.style.top = "auto";
-  previewBottomBtn.style.bottom = "auto";
-  previewBottomBtn.style.left = "auto";
-  previewBottomBtn.style.right = "auto";
-  previewTopBtn.style.transform = "none";
-  previewBottomBtn.style.transform = "none";
-
   // Position horizontally
   if (horizontal === "left") {
-    previewTopBtn.style.left = `${offset}px`;
-    previewBottomBtn.style.left = `${offset}px`;
+    scrollContainer.style.left = `${offset}px`;
   } else {
     // right
-    previewTopBtn.style.right = `${offset}px`;
-    previewBottomBtn.style.right = `${offset}px`;
+    scrollContainer.style.right = `${offset}px`;
   }
 
   // Position vertically
   if (vertical === "top") {
-    previewTopBtn.style.top = `${offset}px`;
-    previewBottomBtn.style.top = `calc(${offset}px + ${buttonSize}px + ${verticalSpacing}px)`;
+    scrollContainer.style.top = `${offset}px`;
+    scrollContainer.style.flexDirection = "column";
   } else if (vertical === "middle") {
-    previewTopBtn.style.top = `calc(50% - ${buttonSize}px - ${verticalSpacing}px / 2)`;
-    previewBottomBtn.style.top = `calc(50% + ${verticalSpacing}px / 2)`;
+    scrollContainer.style.top = "50%";
+    scrollContainer.style.transform = "translateY(-50%)";
+    scrollContainer.style.flexDirection = "column";
   } else {
     // bottom
-    previewBottomBtn.style.bottom = `${offset}px`;
-    previewTopBtn.style.bottom = `calc(${offset}px + ${buttonSize}px + ${verticalSpacing}px)`;
+    scrollContainer.style.bottom = `${offset}px`;
+    scrollContainer.style.flexDirection = "column";
   }
 
   // Apply button size
-  previewTopBtn.style.width = `${buttonSize}px`;
-  previewTopBtn.style.height = `${buttonSize}px`;
-  previewTopBtn.style.lineHeight = `${buttonSize}px`;
-  previewBottomBtn.style.width = `${buttonSize}px`;
-  previewBottomBtn.style.height = `${buttonSize}px`;
-  previewBottomBtn.style.lineHeight = `${buttonSize}px`;
+  const buttons = document.querySelectorAll(".scrollToExt-button");
+  for (const button of Array.from(buttons)) {
+    (button as HTMLElement).style.width = `${buttonSize}px`;
+    (button as HTMLElement).style.height = `${buttonSize}px`;
+    (button as HTMLElement).style.fontSize = `${Math.floor(
+      buttonSize * 0.45
+    )}px`;
+  }
 
-  // Apply opacity
-  previewTopBtn.style.opacity = opacity;
-  previewBottomBtn.style.opacity = opacity;
+  // Apply vertical spacing
+  scrollContainer.style.gap = `${verticalSpacing}px`;
 }

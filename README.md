@@ -66,7 +66,6 @@ The extension provides several customization options:
 - **Hover Opacity**: Opacity when hovering over the buttons
 - **Scroll Behavior**: Smooth or instant scrolling
 - **Button Size**: Size of the buttons
-- **Hide Delay**: Time before buttons fade after scrolling stops
 
 ## License
 

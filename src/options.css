@@ -235,66 +235,6 @@ button#reset:hover {
   border-color: var(--button-danger-hover-border);
 }
 
-.preview {
-  position: relative;
-  height: 300px;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  margin-bottom: 20px;
-  overflow: auto;
-  background-color: var(--surface-secondary);
-}
-
-.preview-scrollbar {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 16px;
-  height: 100%;
-  background-color: var(--surface-hover);
-  pointer-events: none;
-}
-
-.preview-content {
-  padding: 16px;
-  padding-right: 25px;
-}
-
-.preview-content h2 {
-  margin-top: 0;
-  color: var(--text-primary);
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.preview-content h3 {
-  margin-top: 16px;
-  margin-bottom: 8px;
-  color: var(--text-secondary);
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.preview-content p {
-  margin: 10px 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text-tertiary);
-}
-
-.scrollToExt-preview-button {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: var(--button-bg);
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  border: 1px solid var(--button-border);
-}
 
 .feedback-message {
   display: none;
@@ -487,4 +427,19 @@ button#reset:hover {
   border-radius: 5px;
   background-color: var(--surface);
   color: var(--text-primary);
+}
+
+/* Additional styles for the options page */
+.scrollToExt-container {
+  position: fixed;
+  z-index: 9999;
+}
+
+/* Override some styles for the options page */
+body .scrollToExt-button {
+  opacity: var(--current-opacity, 0.5) !important;
+}
+
+body .scrollToExt-button:hover {
+  opacity: var(--current-hover-opacity, 1) !important;
 }

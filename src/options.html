@@ -4,15 +4,16 @@
   <title>Scroll To Top/Bottom Extension Options</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="options.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
     <h1>Scroll To Top/Bottom Settings</h1>
     
-    <div class="preview" id="preview">
-      <div class="preview-scrollbar"></div>
-      <div class="scrollToExt-preview-button" id="previewTopBtn">&#8593;</div>
-      <div class="scrollToExt-preview-button" id="previewBottomBtn">&#8595;</div>
+    <!-- Actual scroll buttons that match the real extension -->
+    <div class="scrollToExt-container" id="scrollButtons">
+      <div class="scrollToExt-button" id="previewTopBtn">&#8593;</div>
+      <div class="scrollToExt-button" id="previewBottomBtn">&#8595;</div>
     </div>
     
     <div class="option-group">
@@ -53,7 +54,7 @@
       <label for="verticalSpacing">
         Spacing Between Buttons: <span id="verticalSpacingValue" class="range-value">10</span>px
       </label>
-      <input type="range" id="verticalSpacing" min="0" max="100" value="10">
+      <input type="range" id="verticalSpacing" min="0" max="50" value="10">
     </div>
     
     <div class="option-group">
@@ -84,12 +85,7 @@
       <label for="buttonSize">
         Button Size: <span id="buttonSizeValue" class="range-value">40</span>px
       </label>
-      <input type="range" id="buttonSize" min="20" max="60" value="40">
-      
-      <label for="hideDelay">
-        Hide Delay: <span id="hideDelayValue" class="range-value">500</span>ms
-      </label>
-      <input type="range" id="hideDelay" min="0" max="2000" step="100" value="500">
+      <input type="range" id="buttonSize" min="20" max="100" value="40">
     </div>
     
     <div class="option-group">

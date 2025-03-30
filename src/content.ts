@@ -17,14 +17,12 @@ interface ScrollToSettings {
   hoverOpacity: number;
   scrollBehavior: ContentScrollBehavior;
   buttonSize: number;
-  hideDelay: number;
 }
 
 // Elements
 let scrollTopBtn: HTMLDivElement;
 let scrollBottomBtn: HTMLDivElement;
 let container: HTMLDivElement;
-let hideTimeout: number | undefined;
 
 // Default settings
 const defaultSettings: ScrollToSettings = {
@@ -35,7 +33,6 @@ const defaultSettings: ScrollToSettings = {
   hoverOpacity: 1,
   scrollBehavior: "smooth",
   buttonSize: 40,
-  hideDelay: 1500,
 };
 
 // Check if the extension should be enabled
@@ -113,14 +110,8 @@ function initScrollButtons(settings: ScrollToSettings): void {
   applySettings(settings);
 
   // Add event listeners
-  window.addEventListener("scroll", () => handleScroll(settings));
+  window.addEventListener("scroll", () => handleScroll());
   window.addEventListener("resize", () => applySettings(settings));
-  container.addEventListener("mouseenter", () => {
-    container.style.opacity = settings.hoverOpacity.toString();
-  });
-  container.addEventListener("mouseleave", () => {
-    container.style.opacity = settings.opacity.toString();
-  });
 
   // Initial button visibility
   updateButtonVisibility();
@@ -159,9 +150,6 @@ function applySettings(settings: ScrollToSettings): void {
   // Spacing between buttons
   container.style.gap = `${settings.verticalSpacing}px`;
 
-  // Opacity
-  container.style.opacity = settings.opacity.toString();
-
   // Button size
   const buttons = document.querySelectorAll<HTMLElement>(".scrollToExt-button");
   for (const btn of Array.from(buttons)) {
@@ -185,43 +173,21 @@ function scrollToBottom(settings: ScrollToSettings): void {
   });
 }
 
-function handleScroll(settings: ScrollToSettings): void {
+function handleScroll(): void {
   updateButtonVisibility();
-
-  // Show buttons when scrolling
-  container.style.opacity = settings.hoverOpacity.toString();
-
-  // Clear previous timeout
-  if (hideTimeout !== undefined) {
-    clearTimeout(hideTimeout);
-  }
-
-  // Set timeout to reduce opacity after scrolling stops
-  hideTimeout = window.setTimeout(() => {
-    if (!container.matches(":hover")) {
-      container.style.opacity = settings.opacity.toString();
-    }
-  }, settings.hideDelay);
 }
 
 function updateButtonVisibility(): void {
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
   const scrollHeight = document.documentElement.scrollHeight;
   const clientHeight = document.documentElement.clientHeight;
 
   // Hide top button when at the top
-  if (scrollTop <= 10) {
-    scrollTopBtn.classList.add("scrollToExt-hidden");
-  } else {
-    scrollTopBtn.classList.remove("scrollToExt-hidden");
-  }
+  scrollTopBtn.classList.toggle("scrollToExt-hidden", scrollTop <= 10);
 
   // Hide bottom button when at the bottom
-  if (scrollTop + clientHeight >= scrollHeight - 10) {
-    scrollBottomBtn.classList.add("scrollToExt-hidden");
-  } else {
-    scrollBottomBtn.classList.remove("scrollToExt-hidden");
-  }
+  const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+  scrollBottomBtn.classList.toggle("scrollToExt-hidden", isAtBottom);
 }
 
 // Listen for settings changes
