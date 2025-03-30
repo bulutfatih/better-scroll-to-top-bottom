@@ -85,9 +85,9 @@ function loadSettings(): void {
 			verticalSpacingInput.value = settings.verticalSpacing.toString();
 			verticalSpacingValue.textContent = settings.verticalSpacing.toString();
 			opacityInput.value = settings.opacity.toString();
-			opacityValue.textContent = settings.opacity.toString();
+			opacityValue.textContent = `${Math.round(settings.opacity * 100)}%`;
 			hoverOpacityInput.value = settings.hoverOpacity.toString();
-			hoverOpacityValue.textContent = settings.hoverOpacity.toString();
+			hoverOpacityValue.textContent = `${Math.round(settings.hoverOpacity * 100)}%`;
 
 			// Set the correct radio button for scroll behavior
 			for (const radio of Array.from(scrollBehaviorRadios)) {
@@ -236,9 +236,9 @@ function resetSettings(): void {
 		verticalSpacingInput.value = optionsDefaultSettings.verticalSpacing.toString();
 		verticalSpacingValue.textContent = optionsDefaultSettings.verticalSpacing.toString();
 		opacityInput.value = optionsDefaultSettings.opacity.toString();
-		opacityValue.textContent = optionsDefaultSettings.opacity.toString();
+		opacityValue.textContent = `${Math.round(optionsDefaultSettings.opacity * 100)}%`;
 		hoverOpacityInput.value = optionsDefaultSettings.hoverOpacity.toString();
-		hoverOpacityValue.textContent = optionsDefaultSettings.hoverOpacity.toString();
+		hoverOpacityValue.textContent = `${Math.round(optionsDefaultSettings.hoverOpacity * 100)}%`;
 
 		// Set the correct radio button for scroll behavior
 		for (const radio of Array.from(scrollBehaviorRadios)) {
@@ -257,8 +257,8 @@ function resetSettings(): void {
 function updateDisplayValues(): void {
 	offsetValue.textContent = offsetInput.value;
 	verticalSpacingValue.textContent = verticalSpacingInput.value;
-	opacityValue.textContent = opacityInput.value;
-	hoverOpacityValue.textContent = hoverOpacityInput.value;
+	opacityValue.textContent = `${Math.round(Number(opacityInput.value) * 100)}%`;
+	hoverOpacityValue.textContent = `${Math.round(Number(hoverOpacityInput.value) * 100)}%`;
 	buttonSizeValue.textContent = buttonSizeInput.value;
 
 	// Update preview
