@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Scroll To Top/Bottom Extension Options</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="options.css">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="container">
     <h1>Scroll To Top/Bottom Settings</h1>
-    
-    <!-- Actual scroll buttons that match the real extension -->
+
     <div class="scrollToExt-container" id="scrollButtons">
       <div class="scrollToExt-button" id="previewTopBtn">&#8593;</div>
       <div class="scrollToExt-button" id="previewBottomBtn">&#8595;</div>
     </div>
-    
+
     <div class="option-group">
       <label>Button Position:</label>
       <div class="position-grid">
@@ -45,31 +46,32 @@
         </div>
       </div>
       <input type="hidden" id="position" value="middle-right">
-      
+
       <label for="offset">
         Distance from Edge: <span id="offsetValue" class="range-value">20</span>px
       </label>
       <input type="range" id="offset" min="0" max="100" value="20">
-      
+
       <label for="verticalSpacing">
         Spacing Between Buttons: <span id="verticalSpacingValue" class="range-value">10</span>px
       </label>
       <input type="range" id="verticalSpacing" min="0" max="50" value="10">
-    </div>
-    
-    <div class="option-group">
+
       <label for="opacity">
         Normal Opacity: <span id="opacityValue" class="range-value">50%</span>
       </label>
       <input type="range" id="opacity" min="0" max="1" step="0.1" value="0.5">
-      
+
       <label for="hoverOpacity">
         Hover Opacity: <span id="hoverOpacityValue" class="range-value">100%</span>
       </label>
       <input type="range" id="hoverOpacity" min="0" max="1" step="0.1" value="1">
-    </div>
-    
-    <div class="option-group">
+
+      <label for="buttonSize">
+        Button Size: <span id="buttonSizeValue" class="range-value">40</span>px
+      </label>
+      <input type="range" id="buttonSize" min="20" max="100" value="40">
+
       <label>Scroll Behavior:</label>
       <div class="radio-group">
         <div class="radio-option">
@@ -81,28 +83,25 @@
           <label for="scrollBehaviorInstant">Instant</label>
         </div>
       </div>
-      
-      <label for="buttonSize">
-        Button Size: <span id="buttonSizeValue" class="range-value">40</span>px
-      </label>
-      <input type="range" id="buttonSize" min="20" max="100" value="40">
+
+
     </div>
-    
+
     <div class="option-group">
       <h3>Disabled Domains</h3>
       <p>The scroll buttons will not appear on these domains:</p>
-      
+
       <div class="domain-list" id="domainList">
         <!-- Domains will be added here dynamically -->
         <div class="empty-message">No domains are currently disabled</div>
       </div>
-      
+
       <div class="add-domain-form">
         <input type="text" id="newDomain" placeholder="Enter a domain (e.g., example.com)" />
         <button id="addDomain">Add Domain</button>
       </div>
     </div>
-    
+
     <div class="buttons">
       <button id="reset">Reset to Defaults</button>
       <button id="save">Save Settings</button>
@@ -111,4 +110,5 @@
   <div class="feedback-message" id="feedback"></div>
   <script src="options.js"></script>
 </body>
-</html> 
+
+</html>
