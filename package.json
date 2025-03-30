@@ -9,14 +9,15 @@
     "watch": "tsc --watch",
     "format": "biome format --write ./src",
     "lint": "biome lint ./src",
-    "check": "biome check ./src"
+    "check": "biome check ./src",
+    "check:fix": "biome check --write ./src"
   },
   "keywords": ["chrome-extension", "scroll", "typescript"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@biomejs/biome": "^1.5.3",
-    "@types/chrome": "^0.0.260",
-    "typescript": "^5.3.3"
+    "@biomejs/biome": "1.9.4",
+    "@types/chrome": "0.0.313",
+    "typescript": "5.8.2"
   }
 }

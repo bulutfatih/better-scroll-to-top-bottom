@@ -1,22 +1,16 @@
 // Define types
-type Position =
-  | "top-left"
-  | "top-right"
-  | "middle-left"
-  | "middle-right"
-  | "bottom-left"
-  | "bottom-right";
+type Position = "top-left" | "top-right" | "middle-left" | "middle-right" | "bottom-left" | "bottom-right";
 
 type ContentScrollBehavior = "smooth" | "auto";
 
 interface ScrollToSettings {
-  position: Position;
-  offset: number;
-  verticalSpacing: number;
-  opacity: number;
-  hoverOpacity: number;
-  scrollBehavior: ContentScrollBehavior;
-  buttonSize: number;
+	position: Position;
+	offset: number;
+	verticalSpacing: number;
+	opacity: number;
+	hoverOpacity: number;
+	scrollBehavior: ContentScrollBehavior;
+	buttonSize: number;
 }
 
 // Elements
@@ -26,175 +20,171 @@ let container: HTMLDivElement;
 
 // Default settings
 const defaultSettings: ScrollToSettings = {
-  position: "middle-right",
-  offset: 20,
-  verticalSpacing: 10,
-  opacity: 0.5,
-  hoverOpacity: 1,
-  scrollBehavior: "smooth",
-  buttonSize: 40,
+	position: "middle-right",
+	offset: 20,
+	verticalSpacing: 10,
+	opacity: 0.5,
+	hoverOpacity: 1,
+	scrollBehavior: "smooth",
+	buttonSize: 40,
 };
 
 // Check if the extension should be enabled
 function shouldEnableExtension(callback: (enabled: boolean) => void): void {
-  // Check if disabled for specific domains
-  chrome.storage.sync.get(["disabledDomains", "disabledUntil"], (data) => {
-    // Check if disabled until a certain time
-    if (data.disabledUntil) {
-      const now = Date.now();
-      if (now < data.disabledUntil) {
-        callback(false);
-        return;
-      }
-    }
+	// Check if disabled for specific domains
+	chrome.storage.sync.get(["disabledDomains", "disabledUntil"], (data) => {
+		// Check if disabled until a certain time
+		if (data.disabledUntil) {
+			const now = Date.now();
+			if (now < data.disabledUntil) {
+				callback(false);
+				return;
+			}
+		}
 
-    // Check if disabled for current domain
-    if (data.disabledDomains && Array.isArray(data.disabledDomains)) {
-      const currentDomain = window.location.hostname;
-      if (data.disabledDomains.includes(currentDomain)) {
-        callback(false);
-        return;
-      }
-    }
+		// Check if disabled for current domain
+		if (data.disabledDomains && Array.isArray(data.disabledDomains)) {
+			const currentDomain = window.location.hostname;
+			if (data.disabledDomains.includes(currentDomain)) {
+				callback(false);
+				return;
+			}
+		}
 
-    // If not disabled, enable extension
-    callback(true);
-  });
+		// If not disabled, enable extension
+		callback(true);
+	});
 }
 
 // Load settings from storage
 shouldEnableExtension((enabled) => {
-  if (!enabled) {
-    return; // Don't initialize if disabled
-  }
+	if (!enabled) {
+		return; // Don't initialize if disabled
+	}
 
-  chrome.storage.sync.get("scrollToSettings", (data) => {
-    const storedSettings = data.scrollToSettings as
-      | ScrollToSettings
-      | undefined;
-    const settings: ScrollToSettings = storedSettings
-      ? { ...defaultSettings, ...storedSettings }
-      : defaultSettings;
+	chrome.storage.sync.get("scrollToSettings", (data) => {
+		const storedSettings = data.scrollToSettings as ScrollToSettings | undefined;
+		const settings: ScrollToSettings = storedSettings ? { ...defaultSettings, ...storedSettings } : defaultSettings;
 
-    initScrollButtons(settings);
-  });
+		initScrollButtons(settings);
+	});
 });
 
 function initScrollButtons(settings: ScrollToSettings): void {
-  // Create container for buttons
-  container = document.createElement("div");
-  container.className = "scrollToExt-container";
+	// Create container for buttons
+	container = document.createElement("div");
+	container.className = "scrollToExt-container";
 
-  // Create scroll to top button
-  scrollTopBtn = document.createElement("div");
-  scrollTopBtn.className = "scrollToExt-button scrollToExt-top";
-  scrollTopBtn.innerHTML = "&#8593;"; // Up arrow HTML entity
-  scrollTopBtn.title = "Scroll to top";
-  scrollTopBtn.addEventListener("click", () => scrollToTop(settings));
+	// Create scroll to top button
+	scrollTopBtn = document.createElement("div");
+	scrollTopBtn.className = "scrollToExt-button scrollToExt-top";
+	scrollTopBtn.innerHTML = "&#8593;"; // Up arrow HTML entity
+	scrollTopBtn.title = "Scroll to top";
+	scrollTopBtn.addEventListener("click", () => scrollToTop(settings));
 
-  // Create scroll to bottom button
-  scrollBottomBtn = document.createElement("div");
-  scrollBottomBtn.className = "scrollToExt-button scrollToExt-bottom";
-  scrollBottomBtn.innerHTML = "&#8595;"; // Down arrow HTML entity
-  scrollBottomBtn.title = "Scroll to bottom";
-  scrollBottomBtn.addEventListener("click", () => scrollToBottom(settings));
+	// Create scroll to bottom button
+	scrollBottomBtn = document.createElement("div");
+	scrollBottomBtn.className = "scrollToExt-button scrollToExt-bottom";
+	scrollBottomBtn.innerHTML = "&#8595;"; // Down arrow HTML entity
+	scrollBottomBtn.title = "Scroll to bottom";
+	scrollBottomBtn.addEventListener("click", () => scrollToBottom(settings));
 
-  // Add buttons to container
-  container.appendChild(scrollTopBtn);
-  container.appendChild(scrollBottomBtn);
+	// Add buttons to container
+	container.appendChild(scrollTopBtn);
+	container.appendChild(scrollBottomBtn);
 
-  // Add container to document
-  document.body.appendChild(container);
+	// Add container to document
+	document.body.appendChild(container);
 
-  // Apply settings
-  applySettings(settings);
+	// Apply settings
+	applySettings(settings);
 
-  // Add event listeners
-  window.addEventListener("scroll", () => handleScroll());
-  window.addEventListener("resize", () => applySettings(settings));
+	// Add event listeners
+	window.addEventListener("scroll", () => handleScroll());
+	window.addEventListener("resize", () => applySettings(settings));
 
-  // Initial button visibility
-  updateButtonVisibility();
+	// Initial button visibility
+	updateButtonVisibility();
 }
 
 function applySettings(settings: ScrollToSettings): void {
-  // Parse position
-  const [vertical, horizontal] = settings.position.split("-");
+	// Parse position
+	const [vertical, horizontal] = settings.position.split("-");
 
-  // Reset all position properties
-  container.style.top = "auto";
-  container.style.bottom = "auto";
-  container.style.left = "auto";
-  container.style.right = "auto";
-  container.style.transform = "none";
+	// Reset all position properties
+	container.style.top = "auto";
+	container.style.bottom = "auto";
+	container.style.left = "auto";
+	container.style.right = "auto";
+	container.style.transform = "none";
 
-  // Position horizontally
-  if (horizontal === "left") {
-    container.style.left = `${settings.offset}px`;
-  } else {
-    // right
-    container.style.right = `${settings.offset}px`;
-  }
+	// Position horizontally
+	if (horizontal === "left") {
+		container.style.left = `${settings.offset}px`;
+	} else {
+		// right
+		container.style.right = `${settings.offset}px`;
+	}
 
-  // Position vertically
-  if (vertical === "top") {
-    container.style.top = `${settings.offset}px`;
-  } else if (vertical === "middle") {
-    container.style.top = "50%";
-    container.style.transform = "translateY(-50%)";
-  } else {
-    // bottom
-    container.style.bottom = `${settings.offset}px`;
-  }
+	// Position vertically
+	if (vertical === "top") {
+		container.style.top = `${settings.offset}px`;
+	} else if (vertical === "middle") {
+		container.style.top = "50%";
+		container.style.transform = "translateY(-50%)";
+	} else {
+		// bottom
+		container.style.bottom = `${settings.offset}px`;
+	}
 
-  // Spacing between buttons
-  container.style.gap = `${settings.verticalSpacing}px`;
+	// Spacing between buttons
+	container.style.gap = `${settings.verticalSpacing}px`;
 
-  // Button size
-  const buttons = document.querySelectorAll<HTMLElement>(".scrollToExt-button");
-  for (const btn of Array.from(buttons)) {
-    btn.style.width = `${settings.buttonSize}px`;
-    btn.style.height = `${settings.buttonSize}px`;
-    btn.style.fontSize = `${settings.buttonSize / 2}px`;
-  }
+	// Button size
+	const buttons = document.querySelectorAll<HTMLElement>(".scrollToExt-button");
+	for (const btn of Array.from(buttons)) {
+		btn.style.width = `${settings.buttonSize}px`;
+		btn.style.height = `${settings.buttonSize}px`;
+		btn.style.fontSize = `${settings.buttonSize / 2}px`;
+	}
 }
 
 function scrollToTop(settings: ScrollToSettings): void {
-  window.scrollTo({
-    top: 0,
-    behavior: settings.scrollBehavior,
-  });
+	window.scrollTo({
+		top: 0,
+		behavior: settings.scrollBehavior,
+	});
 }
 
 function scrollToBottom(settings: ScrollToSettings): void {
-  window.scrollTo({
-    top: document.documentElement.scrollHeight,
-    behavior: settings.scrollBehavior,
-  });
+	window.scrollTo({
+		top: document.documentElement.scrollHeight,
+		behavior: settings.scrollBehavior,
+	});
 }
 
 function handleScroll(): void {
-  updateButtonVisibility();
+	updateButtonVisibility();
 }
 
 function updateButtonVisibility(): void {
-  const scrollTop = window.scrollY || document.documentElement.scrollTop;
-  const scrollHeight = document.documentElement.scrollHeight;
-  const clientHeight = document.documentElement.clientHeight;
+	const scrollTop = window.scrollY || document.documentElement.scrollTop;
+	const scrollHeight = document.documentElement.scrollHeight;
+	const clientHeight = document.documentElement.clientHeight;
 
-  // Hide top button when at the top
-  scrollTopBtn.classList.toggle("scrollToExt-hidden", scrollTop <= 10);
+	// Hide top button when at the top
+	scrollTopBtn.classList.toggle("scrollToExt-hidden", scrollTop <= 10);
 
-  // Hide bottom button when at the bottom
-  const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
-  scrollBottomBtn.classList.toggle("scrollToExt-hidden", isAtBottom);
+	// Hide bottom button when at the bottom
+	const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+	scrollBottomBtn.classList.toggle("scrollToExt-hidden", isAtBottom);
 }
 
 // Listen for settings changes
 chrome.storage.onChanged.addListener((changes) => {
-  if (changes.scrollToSettings) {
-    const newSettings = changes.scrollToSettings.newValue as ScrollToSettings;
-    applySettings(newSettings);
-    updateButtonVisibility();
-  }
+	if (changes.scrollToSettings) {
+		const newSettings = changes.scrollToSettings.newValue as ScrollToSettings;
+		applySettings(newSettings);
+		updateButtonVisibility();
+	}
 });
