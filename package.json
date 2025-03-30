@@ -1,5 +1,5 @@
 {
-  "name": "scroll-to-extension",
+  "name": "better-scroll-to-top-bottom",
   "version": "1.0.0",
   "description": "Chrome extension that adds scroll to top/bottom buttons",
   "main": "dist/content.js",
@@ -13,7 +13,7 @@
     "lint": "biome lint ./src",
     "check": "biome check ./src",
     "check:fix": "biome check --write ./src",
-    "package": "npm run build:prod && cd dist && zip -r ../scroll-to-extension.zip *"
+    "package": "npm run build:prod && cd dist && zip -r ../better-scroll-to-top-bottom.zip *"
   },
   "keywords": [
     "chrome-extension",

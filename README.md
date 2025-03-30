@@ -1,4 +1,4 @@
-# Scroll To Extension
+# Better Scroll to Top/Bottom
 
 A Chrome extension that adds buttons to scroll to the top and bottom of the page.
 

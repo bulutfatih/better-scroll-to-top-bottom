@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
-  <title>Scroll To Extension</title>
+  <title>Better Scroll To Top/Bottom</title>
   <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
-  <h1>Scroll To Extension</h1>
-  
+  <h1>Better Scroll To Top/Bottom</h1>
+
   <label class="toggle-item" for="domain-toggle" id="domain-toggle-container">
     <div style="display: flex; align-items: center;">
       <div class="toggle-item-icon">&#128683;</div>
@@ -18,7 +20,7 @@
       <span class="toggle-slider"></span>
     </div>
   </label>
-  
+
   <label class="toggle-item" for="today-toggle" id="today-toggle-container">
     <div style="display: flex; align-items: center;">
       <div class="toggle-item-icon">&#8987;</div>
@@ -29,21 +31,22 @@
       <span class="toggle-slider"></span>
     </div>
   </label>
-  
+
   <div class="reload-notification" id="reload-notification">
     <div>Settings changed.<br>Reload page to apply changes.</div>
     <button class="reload-button" id="reload-button">Reload Page</button>
   </div>
-  
+
   <div class="divider"></div>
-  
+
   <div class="menu-item" id="open-settings">
     <div class="menu-item-icon">⚙️</div>
     <div class="menu-item-text">Open settings</div>
   </div>
-  
+
   <div class="version" id="version">Version 1.0</div>
-  
+
   <script src="popup.js" type="module"></script>
 </body>
-</html> 
+
+</html>
