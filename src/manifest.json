@@ -1,8 +1,10 @@
 {
 	"manifest_version": 3,
-	"name": "Scroll To Extension",
-	"version": "1.0",
+	"name": "Better Scroll To Top/Bottom",
+	"version": "1.0.0",
 	"description": "Adds buttons to scroll to the top and bottom of the page",
+	"author": "Fatih Bulut",
+	"homepage_url": "https://github.com/bulutfatih/scroll-to-extension",
 	"permissions": ["storage", "tabs", "management"],
 	"action": {
 		"default_popup": "popup.html",

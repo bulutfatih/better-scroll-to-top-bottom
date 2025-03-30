@@ -121,10 +121,11 @@ input {
 	font-size: 14px;
 	transition: border-color 0.15s ease;
 	box-sizing: border-box;
+}
 
-	&:last-child {
-		margin-bottom: 0;
-	}
+select:last-child,
+input:last-child {
+	margin-bottom: 0;
 }
 
 select:focus,
