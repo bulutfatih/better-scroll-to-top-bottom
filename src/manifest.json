@@ -4,7 +4,7 @@
 	"version": "1.0.0",
 	"description": "Adds buttons to scroll to the top and bottom of the page",
 	"author": "Fatih Bulut",
-	"homepage_url": "https://github.com/bulutfatih/scroll-to-extension",
+	"homepage_url": "https://github.com/bulutfatih/better-scroll-to-top-bottom",
 	"permissions": ["storage", "tabs", "management"],
 	"action": {
 		"default_popup": "popup.html",
