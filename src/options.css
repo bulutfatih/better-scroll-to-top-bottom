@@ -446,3 +446,30 @@ body .scrollToExt-button {
 body .scrollToExt-button:hover {
 	opacity: var(--current-hover-opacity, 1) !important;
 }
+
+/* About section */
+.about-section {
+	background-color: var(--surface-secondary);
+	border-radius: 8px;
+	padding: 15px;
+	margin-top: 10px;
+	border: 1px solid var(--border);
+	text-align: center;
+}
+
+.about-section p {
+	margin: 8px 0;
+	line-height: 1.5;
+	color: var(--text-secondary);
+	font-size: 14px;
+}
+
+.about-section a {
+	color: var(--text-tertiary);
+	text-decoration: none;
+}
+
+.about-section a:hover {
+	text-decoration: underline;
+	color: var(--text-primary);
+}

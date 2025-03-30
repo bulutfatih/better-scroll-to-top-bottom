@@ -270,6 +270,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Load settings
 	loadSettings();
 
+	// Load and display extension version
+	loadExtensionVersion();
+
 	// Add event listeners for position options
 	for (const option of Array.from(positionOptions)) {
 		option.addEventListener("click", () => {
@@ -359,4 +362,14 @@ function updatePreview(): void {
 
 	// Apply vertical spacing
 	scrollContainer.style.gap = `${verticalSpacing}px`;
+}
+
+// Load and display extension version
+function loadExtensionVersion(): void {
+	const versionElement = document.getElementById("versionNumber");
+	if (versionElement) {
+		// Get the manifest data to display the current version
+		const manifest = chrome.runtime.getManifest();
+		versionElement.textContent = manifest.version;
+	}
 }
