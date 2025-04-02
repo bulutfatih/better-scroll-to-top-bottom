@@ -97,7 +97,7 @@ function loadSettings(): void {
 			buttonSizeInput.value = settings.buttonSize.toString();
 			buttonSizeValue.textContent = settings.buttonSize.toString();
 		} else {
-			resetSettings();
+			applyDefaultSettings();
 		}
 
 		// Load disabled domains
@@ -106,6 +106,27 @@ function loadSettings(): void {
 		// Update preview
 		updatePreview();
 	});
+}
+
+function applyDefaultSettings(): void {
+	positionSelect.value = optionsDefaultSettings.position;
+	updateSelectedPositionOption(optionsDefaultSettings.position);
+	offsetInput.value = optionsDefaultSettings.offset.toString();
+	offsetValue.textContent = optionsDefaultSettings.offset.toString();
+	verticalSpacingInput.value = optionsDefaultSettings.verticalSpacing.toString();
+	verticalSpacingValue.textContent = optionsDefaultSettings.verticalSpacing.toString();
+	opacityInput.value = optionsDefaultSettings.opacity.toString();
+	opacityValue.textContent = `${Math.round(optionsDefaultSettings.opacity * 100)}%`;
+	hoverOpacityInput.value = optionsDefaultSettings.hoverOpacity.toString();
+	hoverOpacityValue.textContent = `${Math.round(optionsDefaultSettings.hoverOpacity * 100)}%`;
+
+	// Set the correct radio button for scroll behavior
+	for (const radio of Array.from(scrollBehaviorRadios)) {
+		radio.checked = radio.value === optionsDefaultSettings.scrollBehavior;
+	}
+
+	buttonSizeInput.value = optionsDefaultSettings.buttonSize.toString();
+	buttonSizeValue.textContent = optionsDefaultSettings.buttonSize.toString();
 }
 
 // Load disabled domains list
@@ -229,25 +250,7 @@ function saveSettings(): void {
 // Reset settings to defaults
 function resetSettings(): void {
 	if (confirm("Are you sure you want to reset all settings to default values?")) {
-		positionSelect.value = optionsDefaultSettings.position;
-		updateSelectedPositionOption(optionsDefaultSettings.position);
-		offsetInput.value = optionsDefaultSettings.offset.toString();
-		offsetValue.textContent = optionsDefaultSettings.offset.toString();
-		verticalSpacingInput.value = optionsDefaultSettings.verticalSpacing.toString();
-		verticalSpacingValue.textContent = optionsDefaultSettings.verticalSpacing.toString();
-		opacityInput.value = optionsDefaultSettings.opacity.toString();
-		opacityValue.textContent = `${Math.round(optionsDefaultSettings.opacity * 100)}%`;
-		hoverOpacityInput.value = optionsDefaultSettings.hoverOpacity.toString();
-		hoverOpacityValue.textContent = `${Math.round(optionsDefaultSettings.hoverOpacity * 100)}%`;
-
-		// Set the correct radio button for scroll behavior
-		for (const radio of Array.from(scrollBehaviorRadios)) {
-			radio.checked = radio.value === optionsDefaultSettings.scrollBehavior;
-		}
-
-		buttonSizeInput.value = optionsDefaultSettings.buttonSize.toString();
-		buttonSizeValue.textContent = optionsDefaultSettings.buttonSize.toString();
-
+		applyDefaultSettings();
 		saveSettings();
 		showFeedback("Settings reset to defaults!", true);
 	}
