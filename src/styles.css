@@ -1,37 +1,37 @@
 .scrollToExt-container {
-	position: fixed;
-	z-index: 1;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .scrollToExt-button {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: #555;
-	color: white;
-	border-radius: 50%;
-	cursor: pointer;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-	opacity: var(--current-opacity, 0.5);
-	transition: opacity 0.3s;
-	font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #555;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  opacity: var(--current-opacity, 0.5);
+  transition: opacity 0.3s;
+  font-size: 18px;
 }
 
 .scrollToExt-button:hover {
-	opacity: var(--current-hover-opacity, 1);
+  opacity: var(--current-hover-opacity, 1);
 }
 
 .scrollToExt-button.scrollToExt-hidden {
-	opacity: 0;
-	pointer-events: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Ensure the buttons don't interfere with page content */
 .scrollToExt-container * {
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	user-select: none;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  user-select: none;
 }
