@@ -94,7 +94,7 @@ function initScrollButtons(settings: ScrollToSettings): void {
 	container.appendChild(scrollBottomBtn);
 
 	// Add container to document
-	document.body.appendChild(container);
+	document.documentElement.appendChild(container);
 
 	// Apply settings
 	applySettings(settings);
@@ -105,6 +105,19 @@ function initScrollButtons(settings: ScrollToSettings): void {
 
 	// Initial button visibility
 	updateButtonVisibility();
+
+	// Check periodically until page becomes scrollable
+	const checkScrollable = () => {
+		const isScrollable = document.documentElement.scrollHeight > document.documentElement.clientHeight;
+		if (isScrollable) {
+			updateButtonVisibility();
+		} else {
+			setTimeout(checkScrollable, 500);
+		}
+	};
+
+	// Start checking
+	checkScrollable();
 }
 
 function applySettings(settings: ScrollToSettings): void {
