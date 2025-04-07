@@ -6,6 +6,13 @@
   gap: 10px;
 }
 
+:fullscreen .scrollToExt-container,
+:-webkit-full-screen .scrollToExt-container,
+:-moz-full-screen .scrollToExt-container,
+:-ms-fullscreen .scrollToExt-container {
+  display: none;
+}
+
 .scrollToExt-button {
   display: flex;
   align-items: center;
