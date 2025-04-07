@@ -2,6 +2,11 @@
 
 A Chrome extension that adds buttons to scroll to the top and bottom of the page.
 
+<a href="https://chromewebstore.google.com/detail/better-scroll-to-topbotto/ifdjdmipgndncbeopapghbohjdiieibl">
+  <img src="https://user-images.githubusercontent.com/22908993/166417152-f870bfbd-1770-4c28-b69d-a7303aebc9a6.png" alt="Chrome web store" />
+  <p>Chrome Web Store</p>
+</a>
+
 ## Features
 
 - Adds scroll to top and bottom buttons to any webpage
