@@ -5,7 +5,7 @@
   "description": "Adds buttons to scroll to the top and bottom of the page",
   "author": "Fatih Bulut",
   "homepage_url": "https://github.com/bulutfatih/better-scroll-to-top-bottom",
-  "permissions": ["storage", "tabs", "management"],
+  "permissions": ["storage", "tabs"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
