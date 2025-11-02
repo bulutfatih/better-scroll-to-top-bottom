@@ -93,6 +93,10 @@ function initScrollButtons(settings: ScrollToSettings): void {
 	container.appendChild(scrollTopBtn);
 	container.appendChild(scrollBottomBtn);
 
+	// Hide buttons initially to prevent flash
+	scrollTopBtn.classList.add("scrollToExt-hidden");
+	scrollBottomBtn.classList.add("scrollToExt-hidden");
+
 	// Add container to document
 	document.documentElement.appendChild(container);
 
@@ -101,23 +105,33 @@ function initScrollButtons(settings: ScrollToSettings): void {
 
 	// Add event listeners
 	window.addEventListener("scroll", () => handleScroll());
-	window.addEventListener("resize", () => applySettings(settings));
+	window.addEventListener("resize", () => {
+		applySettings(settings);
+		updateButtonVisibility();
+	});
 
 	// Initial button visibility
 	updateButtonVisibility();
 
-	// Check periodically until page becomes scrollable
-	const checkScrollable = () => {
-		const isScrollable = document.documentElement.scrollHeight > document.documentElement.clientHeight;
-		if (isScrollable) {
-			updateButtonVisibility();
-		} else {
-			setTimeout(checkScrollable, 500);
-		}
-	};
+	// Watch for DOM changes that might affect page height
+	const observer = new MutationObserver(() => {
+		updateButtonVisibility();
+	});
 
-	// Start checking
-	checkScrollable();
+	// Start observing the document for changes
+	observer.observe(document.body, {
+		childList: true,
+		subtree: true,
+		attributes: true,
+		attributeFilter: ["style", "class"],
+	});
+
+	// Also observe the document element for size changes
+	const resizeObserver = new ResizeObserver(() => {
+		updateButtonVisibility();
+	});
+
+	resizeObserver.observe(document.documentElement);
 }
 
 function applySettings(settings: ScrollToSettings): void {
@@ -184,6 +198,13 @@ function updateButtonVisibility(): void {
 	const scrollTop = window.scrollY || document.documentElement.scrollTop;
 	const scrollHeight = document.documentElement.scrollHeight;
 	const clientHeight = document.documentElement.clientHeight;
+
+	const isScrollable = scrollHeight > clientHeight;
+	if (!isScrollable) {
+		scrollTopBtn.classList.add("scrollToExt-hidden");
+		scrollBottomBtn.classList.add("scrollToExt-hidden");
+		return;
+	}
 
 	// Hide top button when at the top
 	scrollTopBtn.classList.toggle("scrollToExt-hidden", scrollTop <= 10);
