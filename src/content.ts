@@ -167,6 +167,10 @@ function applySettings(settings: ScrollToSettings): void {
 	// Spacing between buttons
 	container.style.gap = `${settings.verticalSpacing}px`;
 
+	// Set opacity values using CSS variables
+	document.documentElement.style.setProperty("--current-opacity", settings.opacity.toString());
+	document.documentElement.style.setProperty("--current-hover-opacity", settings.hoverOpacity.toString());
+
 	// Button size
 	const buttons = document.querySelectorAll<HTMLElement>(".scrollToExt-button");
 	for (const btn of Array.from(buttons)) {
