@@ -7,10 +7,10 @@
 	pointer-events: none;
 }
 
-:fullscreen .scrollToExt-container,
-:-webkit-full-screen .scrollToExt-container,
-:-moz-full-screen .scrollToExt-container,
-:-ms-fullscreen .scrollToExt-container {
+html:fullscreen .scrollToExt-container,
+html:-webkit-full-screen .scrollToExt-container,
+html:-moz-full-screen .scrollToExt-container,
+html:-ms-fullscreen .scrollToExt-container {
 	display: none;
 }
 
