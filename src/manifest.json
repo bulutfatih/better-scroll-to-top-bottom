@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Better Scroll To Top/Bottom",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Adds buttons to scroll to the top and bottom of the page",
 	"author": "Fatih Bulut",
 	"homepage_url": "https://github.com/bulutfatih/better-scroll-to-top-bottom",
